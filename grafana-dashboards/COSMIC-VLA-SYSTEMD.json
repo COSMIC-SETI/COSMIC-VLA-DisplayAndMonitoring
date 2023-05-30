@@ -1,0 +1,1281 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": "-- Grafana --",
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "gnetId": null,
+    "graphTooltip": 0,
+    "id": 7,
+    "links": [],
+    "panels": [
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "Prometheus",
+        "decimals": 0,
+        "fieldConfig": {
+          "defaults": {
+            "custom": {}
+          },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 11,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "hiddenSeries": false,
+        "id": 9,
+        "legend": {
+          "alignAsTable": true,
+          "avg": true,
+          "current": true,
+          "max": true,
+          "min": true,
+          "rightSide": true,
+          "show": true,
+          "total": false,
+          "values": true
+        },
+        "lines": false,
+        "linewidth": 1,
+        "links": [],
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "7.4.3",
+        "pointradius": 3,
+        "points": true,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "sum(node_systemd_unit_state) by (state)",
+            "interval": "1m",
+            "intervalFactor": 2,
+            "legendFormat": "{{ state }}",
+            "metric": "node_systemd_unit_state",
+            "refId": "A",
+            "step": 120
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": "24h",
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Unit State Count",
+        "tooltip": {
+          "shared": true,
+          "sort": 1,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "alert": {
+          "alertRuleTags": {},
+          "conditions": [
+            {
+              "evaluator": {
+                "params": [
+                  3
+                ],
+                "type": "lt"
+              },
+              "operator": {
+                "type": "and"
+              },
+              "query": {
+                "params": [
+                  "A",
+                  "5m",
+                  "now"
+                ]
+              },
+              "reducer": {
+                "params": [],
+                "type": "avg"
+              },
+              "type": "query"
+            }
+          ],
+          "executionErrorState": "alerting",
+          "for": "1m",
+          "frequency": "10s",
+          "handler": 1,
+          "message": "COSMIC VLA Geometric delay model service is experiencing issue restarting or is not started for the last 1min on the cosmic headnode.\n\nPlease inspect service delaymodel.service on the cosmic headnode.",
+          "name": "Geometric Delay Model Service alert",
+          "noDataState": "no_data",
+          "notifications": [
+            {
+              "uid": "tlOUkK84k"
+            }
+          ]
+        },
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "description": "Delay model service state. Zone 3 is \"active\", zone 2 is \"inactive\", zone 1 is \"failed\".",
+        "fieldConfig": {
+          "defaults": {
+            "color": {},
+            "custom": {},
+            "thresholds": {
+              "mode": "absolute",
+              "steps": []
+            }
+          },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 17,
+          "w": 6,
+          "x": 0,
+          "y": 11
+        },
+        "hiddenSeries": false,
+        "id": 2,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 2,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "7.4.3",
+        "pointradius": 2,
+        "points": true,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "$$hashKey": "object:1082",
+            "aggregation": "Last",
+            "crit": 1,
+            "decimals": 2,
+            "displayAliasType": "Warning / Critical",
+            "displayType": "Regular",
+            "displayValueWithAlias": "Never",
+            "expr": "3*sum(systemd_unit_state{name=\"delaymodel.service\", state=\"active\"}) + 2*sum(systemd_unit_state{name=\"delaymodel.service\", state=\"inactive\"}) + sum(systemd_unit_state{name=\"delaymodel.service\", state=\"failed\"})",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "delay model service",
+            "refId": "A",
+            "units": "none",
+            "valueHandler": "Number Threshold",
+            "warn": 2
+          }
+        ],
+        "thresholds": [
+          {
+            "colorMode": "critical",
+            "fill": true,
+            "line": true,
+            "op": "lt",
+            "value": 3,
+            "visible": true
+          }
+        ],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Geometric Delay Model Service",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:1242",
+            "format": "short",
+            "label": "service state",
+            "logBase": 1,
+            "max": "3",
+            "min": "0",
+            "show": true
+          },
+          {
+            "$$hashKey": "object:1243",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "alert": {
+          "alertRuleTags": {},
+          "conditions": [
+            {
+              "evaluator": {
+                "params": [
+                  3
+                ],
+                "type": "lt"
+              },
+              "operator": {
+                "type": "and"
+              },
+              "query": {
+                "params": [
+                  "A",
+                  "5m",
+                  "now"
+                ]
+              },
+              "reducer": {
+                "params": [],
+                "type": "avg"
+              },
+              "type": "query"
+            }
+          ],
+          "executionErrorState": "alerting",
+          "for": "1m",
+          "frequency": "10s",
+          "handler": 1,
+          "message": "COSMIC VLA Calibration service is experiencing issue restarting or is not started for the last 1min on the cosmic headnode.\n\nPlease inspect service calibration_gain_collator.service on the cosmic headnode.",
+          "name": "Calibration Service alert",
+          "noDataState": "no_data",
+          "notifications": [
+            {
+              "uid": "tlOUkK84k"
+            }
+          ]
+        },
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "description": "Calibrations service state. Zone 3 is \"active\", zone 2 is \"inactive\", zone 1 is \"failed\".",
+        "fieldConfig": {
+          "defaults": {
+            "color": {},
+            "custom": {},
+            "thresholds": {
+              "mode": "absolute",
+              "steps": []
+            }
+          },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 17,
+          "w": 6,
+          "x": 6,
+          "y": 11
+        },
+        "hiddenSeries": false,
+        "id": 18,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 2,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "7.4.3",
+        "pointradius": 2,
+        "points": true,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "$$hashKey": "object:1082",
+            "aggregation": "Last",
+            "crit": 1,
+            "decimals": 2,
+            "displayAliasType": "Warning / Critical",
+            "displayType": "Regular",
+            "displayValueWithAlias": "Never",
+            "expr": "3*sum(systemd_unit_state{name=\"calibration_gain_collator.service\", state=\"active\"}) + 2*sum(systemd_unit_state{name=\"calibration_gain_collator.service\", state=\"inactive\"}) + sum(systemd_unit_state{name=\"calibration_gain_collator.service\", state=\"failed\"})",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "calibration service",
+            "refId": "A",
+            "units": "none",
+            "valueHandler": "Number Threshold",
+            "warn": 2
+          }
+        ],
+        "thresholds": [
+          {
+            "colorMode": "critical",
+            "fill": true,
+            "line": true,
+            "op": "lt",
+            "value": 3,
+            "visible": true
+          }
+        ],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Calibration Service",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:1242",
+            "format": "short",
+            "label": "service state",
+            "logBase": 1,
+            "max": "3",
+            "min": "0",
+            "show": true
+          },
+          {
+            "$$hashKey": "object:1243",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "alert": {
+          "alertRuleTags": {},
+          "conditions": [
+            {
+              "evaluator": {
+                "params": [
+                  3
+                ],
+                "type": "lt"
+              },
+              "operator": {
+                "type": "and"
+              },
+              "query": {
+                "params": [
+                  "A",
+                  "5m",
+                  "now"
+                ]
+              },
+              "reducer": {
+                "params": [],
+                "type": "avg"
+              },
+              "type": "query"
+            }
+          ],
+          "executionErrorState": "alerting",
+          "for": "1m",
+          "frequency": "10s",
+          "handler": 1,
+          "message": "COSMIC VLA MCAST to Redis service is experiencing issue restarting or is not started for the last 1min on the cosmic headnode.\n\nPlease inspect service mcast2redis.service on the cosmic headnode.",
+          "name": "Mcast to Redis Service alert",
+          "noDataState": "no_data",
+          "notifications": [
+            {
+              "uid": "tlOUkK84k"
+            }
+          ]
+        },
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "description": "Mcast to Redis service state. Zone 3 is \"active\", zone 2 is \"inactive\", zone 1 is \"failed\".",
+        "fieldConfig": {
+          "defaults": {
+            "color": {},
+            "custom": {},
+            "thresholds": {
+              "mode": "absolute",
+              "steps": []
+            }
+          },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 17,
+          "w": 6,
+          "x": 12,
+          "y": 11
+        },
+        "hiddenSeries": false,
+        "id": 15,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 2,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "7.4.3",
+        "pointradius": 2,
+        "points": true,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "$$hashKey": "object:1082",
+            "aggregation": "Last",
+            "crit": 1,
+            "decimals": 2,
+            "displayAliasType": "Warning / Critical",
+            "displayType": "Regular",
+            "displayValueWithAlias": "Never",
+            "expr": "3*sum(systemd_unit_state{name=\"mcast2redis.service\", state=\"active\"}) + 2*sum(systemd_unit_state{name=\"mcast2redis.service\", state=\"inactive\"}) + sum(systemd_unit_state{name=\"mcast2redis.service\", state=\"failed\"})",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "mcast2redis service",
+            "refId": "A",
+            "units": "none",
+            "valueHandler": "Number Threshold",
+            "warn": 2
+          }
+        ],
+        "thresholds": [
+          {
+            "colorMode": "critical",
+            "fill": true,
+            "line": true,
+            "op": "lt",
+            "value": 3,
+            "visible": true
+          }
+        ],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Mcast to Redis Service",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:1242",
+            "format": "short",
+            "label": "service state",
+            "logBase": 1,
+            "max": "3",
+            "min": "0",
+            "show": true
+          },
+          {
+            "$$hashKey": "object:1243",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "alert": {
+          "alertRuleTags": {},
+          "conditions": [
+            {
+              "evaluator": {
+                "params": [
+                  3
+                ],
+                "type": "lt"
+              },
+              "operator": {
+                "type": "and"
+              },
+              "query": {
+                "params": [
+                  "A",
+                  "5m",
+                  "now"
+                ]
+              },
+              "reducer": {
+                "params": [],
+                "type": "avg"
+              },
+              "type": "query"
+            }
+          ],
+          "executionErrorState": "alerting",
+          "for": "1m",
+          "frequency": "10s",
+          "handler": 1,
+          "message": "COSMIC VLA Flagged antenna service is experiencing issue restarting or is not started for the last 1min on the cosmic headnode.\n\nPlease inspect service flaggedantenna.service on the cosmic headnode.",
+          "name": "Flagged Antenna Service alert",
+          "noDataState": "no_data",
+          "notifications": [
+            {
+              "uid": "tlOUkK84k"
+            }
+          ]
+        },
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "description": "Flagged antenna service state. Zone 3 is \"active\", zone 2 is \"inactive\", zone 1 is \"failed\".",
+        "fieldConfig": {
+          "defaults": {
+            "color": {},
+            "custom": {},
+            "thresholds": {
+              "mode": "absolute",
+              "steps": []
+            }
+          },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 17,
+          "w": 6,
+          "x": 18,
+          "y": 11
+        },
+        "hiddenSeries": false,
+        "id": 16,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 2,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "7.4.3",
+        "pointradius": 2,
+        "points": true,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "$$hashKey": "object:1082",
+            "aggregation": "Last",
+            "crit": 1,
+            "decimals": 2,
+            "displayAliasType": "Warning / Critical",
+            "displayType": "Regular",
+            "displayValueWithAlias": "Never",
+            "expr": "3*sum(systemd_unit_state{name=\"flaggedantenna.service\", state=\"active\"}) + 2*sum(systemd_unit_state{name=\"flaggedantenna.service\", state=\"inactive\"}) + sum(systemd_unit_state{name=\"flaggedantenna.service\", state=\"failed\"})",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "flagged antenna service",
+            "refId": "A",
+            "units": "none",
+            "valueHandler": "Number Threshold",
+            "warn": 2
+          }
+        ],
+        "thresholds": [
+          {
+            "colorMode": "critical",
+            "fill": true,
+            "line": true,
+            "op": "lt",
+            "value": 3,
+            "visible": true
+          }
+        ],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Flagged Antenna Service",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:1242",
+            "format": "short",
+            "label": "service state",
+            "logBase": 1,
+            "max": "3",
+            "min": "0",
+            "show": true
+          },
+          {
+            "$$hashKey": "object:1243",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "alert": {
+          "alertRuleTags": {},
+          "conditions": [
+            {
+              "evaluator": {
+                "params": [
+                  3
+                ],
+                "type": "lt"
+              },
+              "operator": {
+                "type": "and"
+              },
+              "query": {
+                "params": [
+                  "A",
+                  "5m",
+                  "now"
+                ]
+              },
+              "reducer": {
+                "params": [],
+                "type": "avg"
+              },
+              "type": "query"
+            }
+          ],
+          "executionErrorState": "alerting",
+          "for": "1m",
+          "frequency": "10s",
+          "handler": 1,
+          "message": "COSMIC VLA Hashpipe Meta Marshall service is experiencing issue restarting or is not started for the last 1min on the cosmic headnode.\n\nPlease inspect service hashpipe_meta_marshall.service on the cosmic headnode.",
+          "name": "Hashpipe Meta Marshall Service alert",
+          "noDataState": "no_data",
+          "notifications": [
+            {
+              "uid": "tlOUkK84k"
+            }
+          ]
+        },
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "description": "Hashpipe metamarshall service state. Zone 3 is \"active\", zone 2 is \"inactive\", zone 1 is \"failed\".",
+        "fieldConfig": {
+          "defaults": {
+            "color": {},
+            "custom": {},
+            "thresholds": {
+              "mode": "absolute",
+              "steps": []
+            }
+          },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 17,
+          "w": 6,
+          "x": 0,
+          "y": 28
+        },
+        "hiddenSeries": false,
+        "id": 14,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 2,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "7.4.3",
+        "pointradius": 2,
+        "points": true,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "$$hashKey": "object:1082",
+            "aggregation": "Last",
+            "crit": 1,
+            "decimals": 2,
+            "displayAliasType": "Warning / Critical",
+            "displayType": "Regular",
+            "displayValueWithAlias": "Never",
+            "expr": "3*sum(systemd_unit_state{name=\"hashpipe_meta_marshall.service\", state=\"active\"}) + 2*sum(systemd_unit_state{name=\"hashpipe_meta_marshall.service\", state=\"inactive\"}) + sum(systemd_unit_state{name=\"hashpipe_meta_marshall.service\", state=\"failed\"})",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "hashpipe metamarshall service",
+            "refId": "A",
+            "units": "none",
+            "valueHandler": "Number Threshold",
+            "warn": 2
+          }
+        ],
+        "thresholds": [
+          {
+            "colorMode": "critical",
+            "fill": true,
+            "line": true,
+            "op": "lt",
+            "value": 3,
+            "visible": true
+          }
+        ],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Hashpipe Meta Marshall Service",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:1242",
+            "format": "short",
+            "label": "service state",
+            "logBase": 1,
+            "max": "3",
+            "min": "0",
+            "show": true
+          },
+          {
+            "$$hashKey": "object:1243",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "alert": {
+          "alertRuleTags": {},
+          "conditions": [
+            {
+              "evaluator": {
+                "params": [
+                  3
+                ],
+                "type": "lt"
+              },
+              "operator": {
+                "type": "and"
+              },
+              "query": {
+                "params": [
+                  "A",
+                  "5m",
+                  "now"
+                ]
+              },
+              "reducer": {
+                "params": [],
+                "type": "avg"
+              },
+              "type": "query"
+            }
+          ],
+          "executionErrorState": "alerting",
+          "for": "1m",
+          "frequency": "10s",
+          "handler": 1,
+          "message": "COSMIC VLA Delay Logger service is experiencing issue restarting or is not started for the last 1min on the cosmic headnode.\n\nPlease inspect service delaylogger.service on the cosmic headnode.",
+          "name": "Delay Logger Service alert",
+          "noDataState": "no_data",
+          "notifications": [
+            {
+              "uid": "tlOUkK84k"
+            }
+          ]
+        },
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "description": "Delay logger service state. Zone 3 is \"active\", zone 2 is \"inactive\", zone 1 is \"failed\".",
+        "fieldConfig": {
+          "defaults": {
+            "color": {},
+            "custom": {},
+            "thresholds": {
+              "mode": "absolute",
+              "steps": []
+            }
+          },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 17,
+          "w": 6,
+          "x": 6,
+          "y": 28
+        },
+        "hiddenSeries": false,
+        "id": 20,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 2,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "7.4.3",
+        "pointradius": 2,
+        "points": true,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "$$hashKey": "object:1082",
+            "aggregation": "Last",
+            "crit": 1,
+            "decimals": 2,
+            "displayAliasType": "Warning / Critical",
+            "displayType": "Regular",
+            "displayValueWithAlias": "Never",
+            "expr": "3*sum(systemd_unit_state{name=\"delaylogger.service\", state=\"active\"}) + 2*sum(systemd_unit_state{name=\"delaylogger.service\", state=\"inactive\"}) + sum(systemd_unit_state{name=\"delaylogger.service\", state=\"failed\"})",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "delay logger service",
+            "refId": "A",
+            "units": "none",
+            "valueHandler": "Number Threshold",
+            "warn": 2
+          }
+        ],
+        "thresholds": [
+          {
+            "colorMode": "critical",
+            "fill": true,
+            "line": true,
+            "op": "lt",
+            "value": 3,
+            "visible": true
+          }
+        ],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Delay Logger Service",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:1242",
+            "format": "short",
+            "label": "service state",
+            "logBase": 1,
+            "max": "3",
+            "min": "0",
+            "show": true
+          },
+          {
+            "$$hashKey": "object:1243",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "alert": {
+          "alertRuleTags": {},
+          "conditions": [
+            {
+              "evaluator": {
+                "params": [
+                  3
+                ],
+                "type": "lt"
+              },
+              "operator": {
+                "type": "and"
+              },
+              "query": {
+                "params": [
+                  "A",
+                  "5m",
+                  "now"
+                ]
+              },
+              "reducer": {
+                "params": [],
+                "type": "avg"
+              },
+              "type": "query"
+            }
+          ],
+          "executionErrorState": "alerting",
+          "for": "1m",
+          "frequency": "10s",
+          "handler": 1,
+          "message": "COSMIC VLA Phase centre controller service is experiencing issue restarting or is not started for the last 1min on the cosmic headnode.\n\nPlease inspect servicephase_center_controller.service on the cosmic headnode.",
+          "name": "Phase Centre Controller Service alert",
+          "noDataState": "no_data",
+          "notifications": [
+            {
+              "uid": "tlOUkK84k"
+            }
+          ]
+        },
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "description": "Phase Centre Controller state. Zone 3 is \"active\", zone 2 is \"inactive\", zone 1 is \"failed\".",
+        "fieldConfig": {
+          "defaults": {
+            "color": {},
+            "custom": {},
+            "thresholds": {
+              "mode": "absolute",
+              "steps": []
+            }
+          },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 17,
+          "w": 6,
+          "x": 12,
+          "y": 28
+        },
+        "hiddenSeries": false,
+        "id": 22,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 2,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "7.4.3",
+        "pointradius": 2,
+        "points": true,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "$$hashKey": "object:1082",
+            "aggregation": "Last",
+            "crit": 1,
+            "decimals": 2,
+            "displayAliasType": "Warning / Critical",
+            "displayType": "Regular",
+            "displayValueWithAlias": "Never",
+            "expr": "3*sum(systemd_unit_state{name=\"phase_center_controller.service\", state=\"active\"}) + 2*sum(systemd_unit_state{name=\"phase_center_controller.service\", state=\"inactive\"}) + sum(systemd_unit_state{name=\"phase_center_controller.service\", state=\"failed\"})",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "phase centre controller service",
+            "refId": "A",
+            "units": "none",
+            "valueHandler": "Number Threshold",
+            "warn": 2
+          }
+        ],
+        "thresholds": [
+          {
+            "colorMode": "critical",
+            "fill": true,
+            "line": true,
+            "op": "lt",
+            "value": 3,
+            "visible": true
+          }
+        ],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Phase Centre Controller Service",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:1242",
+            "format": "short",
+            "label": "service state",
+            "logBase": 1,
+            "max": "3",
+            "min": "0",
+            "show": true
+          },
+          {
+            "$$hashKey": "object:1243",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      }
+    ],
+    "refresh": false,
+    "schemaVersion": 27,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+      "list": []
+    },
+    "time": {
+      "from": "now-6h",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "COSMIC-VLA-SYSTEMD",
+    "uid": "QM2alafVz",
+    "version": 21
+  }
