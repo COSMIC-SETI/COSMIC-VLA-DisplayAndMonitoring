@@ -1020,6 +1020,192 @@
     },
     {
       "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 24
+      },
+      "id": 71,
+      "panels": [],
+      "title": "All antenna delay state",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "XeuuDYUVz"
+      },
+      "description": "States are:\nGood = delay tracking thread is initialised and turned on to track.\nBad = delay tracking thread is initialised but has not been turned to track - likely means thread failed due to F-Engine timing.\nOff = delay tracking thread is not even initialised - likely means F-Engine is not configured and in operation.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "red",
+                  "index": 1,
+                  "text": "Bad"
+                },
+                "1": {
+                  "color": "green",
+                  "index": 0,
+                  "text": "Good"
+                },
+                "-1": {
+                  "color": "text",
+                  "index": 2,
+                  "text": "Off"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 24,
+        "x": 0,
+        "y": 25
+      },
+      "id": 73,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value_and_name"
+      },
+      "pluginVersion": "9.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "XeuuDYUVz"
+          },
+          "query": "from(bucket: \"delays\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"delay_state\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"tracking_alive\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"ea01\" or r[\"ant\"] == \"ea02\" or r[\"ant\"] == \"ea03\" or r[\"ant\"] == \"ea04\" or r[\"ant\"] == \"ea05\" or r[\"ant\"] == \"ea06\" or r[\"ant\"] == \"ea07\" or r[\"ant\"] == \"ea08\" or r[\"ant\"] == \"ea09\" or r[\"ant\"] == \"ea10\" or r[\"ant\"] == \"ea11\" or r[\"ant\"] == \"ea12\" or r[\"ant\"] == \"ea13\" or r[\"ant\"] == \"ea14\" or r[\"ant\"] == \"ea15\" or r[\"ant\"] == \"ea16\" or r[\"ant\"] == \"ea17\" or r[\"ant\"] == \"ea18\" or r[\"ant\"] == \"ea19\" or r[\"ant\"] == \"ea20\" or r[\"ant\"] == \"ea21\" or r[\"ant\"] == \"ea22\" or r[\"ant\"] == \"ea23\" or r[\"ant\"] == \"ea24\" or r[\"ant\"] == \"ea25\" or r[\"ant\"] == \"ea26\" or r[\"ant\"] == \"ea27\" or r[\"ant\"] == \"ea28\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "refId": "A"
+        }
+      ],
+      "title": "State of delay tracking across all antenna",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "XeuuDYUVz"
+      },
+      "description": "Determined by:\n|sum_frequencies(sum_antenna(gains))| / sum_frequencies(sum_antenna(|gains|))",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 24,
+        "x": 0,
+        "y": 38
+      },
+      "id": 72,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "XeuuDYUVz"
+          },
+          "query": "from(bucket: \"delays\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"fix_paths\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"calibration_grade\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "refId": "Grade"
+        }
+      ],
+      "title": "Total Calibration grade",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
       "datasource": {
         "type": "prometheus",
         "uid": "louR3C0Vz"
@@ -1028,7 +1214,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 24
+        "y": 49
       },
       "id": 9,
       "panels": [],
@@ -1079,7 +1265,7 @@
         "h": 4,
         "w": 4,
         "x": 0,
-        "y": 25
+        "y": 50
       },
       "id": 15,
       "options": {
@@ -1178,7 +1364,7 @@
         "h": 4,
         "w": 4,
         "x": 4,
-        "y": 25
+        "y": 50
       },
       "id": 17,
       "options": {
@@ -1239,7 +1425,7 @@
           "tags": []
         }
       ],
-      "title": "${Antenna} Delay status",
+      "title": "${Antenna} loading correct delays",
       "type": "stat"
     },
     {
@@ -1277,7 +1463,7 @@
         "h": 4,
         "w": 4,
         "x": 8,
-        "y": 25
+        "y": 50
       },
       "id": 25,
       "options": {
@@ -1376,7 +1562,7 @@
         "h": 4,
         "w": 4,
         "x": 12,
-        "y": 25
+        "y": 50
       },
       "id": 37,
       "options": {
@@ -1475,7 +1661,7 @@
         "h": 4,
         "w": 4,
         "x": 16,
-        "y": 25
+        "y": 50
       },
       "id": 43,
       "options": {
@@ -1563,7 +1749,7 @@
         "h": 4,
         "w": 2,
         "x": 20,
-        "y": 25
+        "y": 50
       },
       "id": 45,
       "options": {
@@ -1651,7 +1837,7 @@
         "h": 4,
         "w": 2,
         "x": 22,
-        "y": 25
+        "y": 50
       },
       "id": 47,
       "options": {
@@ -1746,7 +1932,7 @@
         "h": 4,
         "w": 5,
         "x": 0,
-        "y": 29
+        "y": 54
       },
       "id": 35,
       "options": {
@@ -1842,7 +2028,7 @@
         "h": 4,
         "w": 5,
         "x": 5,
-        "y": 29
+        "y": 54
       },
       "id": 33,
       "options": {
@@ -1921,9 +2107,13 @@
             {
               "options": {
                 "0": {
+                  "color": "red",
+                  "index": 1,
                   "text": "Bad"
                 },
                 "1": {
+                  "color": "green",
+                  "index": 0,
                   "text": "Good"
                 }
               },
@@ -1941,7 +2131,7 @@
         "h": 4,
         "w": 5,
         "x": 10,
-        "y": 29
+        "y": 54
       },
       "id": 39,
       "options": {
@@ -2020,10 +2210,19 @@
             {
               "options": {
                 "0": {
+                  "color": "red",
+                  "index": 1,
                   "text": "Bad"
                 },
                 "1": {
+                  "color": "green",
+                  "index": 0,
                   "text": "Good"
+                },
+                "-1": {
+                  "color": "text",
+                  "index": 2,
+                  "text": "Off"
                 }
               },
               "type": "value"
@@ -2040,7 +2239,7 @@
         "h": 4,
         "w": 5,
         "x": 15,
-        "y": 29
+        "y": 54
       },
       "id": 41,
       "options": {
@@ -2128,7 +2327,7 @@
         "h": 4,
         "w": 2,
         "x": 20,
-        "y": 29
+        "y": 54
       },
       "id": 49,
       "options": {
@@ -2216,7 +2415,7 @@
         "h": 4,
         "w": 2,
         "x": 22,
-        "y": 29
+        "y": 54
       },
       "id": 51,
       "options": {
@@ -2326,8 +2525,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2343,7 +2541,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 33
+        "y": 58
       },
       "id": 21,
       "options": {
@@ -2472,7 +2670,7 @@
             },
             "lineInterpolation": "linear",
             "lineWidth": 1,
-            "pointSize": 3,
+            "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
@@ -2491,8 +2689,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2508,7 +2705,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 43
+        "y": 68
       },
       "id": 53,
       "options": {
@@ -2615,8 +2812,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2632,7 +2828,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 54
+        "y": 79
       },
       "id": 55,
       "options": {
@@ -2739,8 +2935,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2756,7 +2951,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 65
+        "y": 90
       },
       "id": 57,
       "options": {
@@ -2863,8 +3058,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2880,7 +3074,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 76
+        "y": 101
       },
       "id": 59,
       "options": {
@@ -2987,8 +3181,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3004,7 +3197,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 87
+        "y": 112
       },
       "id": 23,
       "options": {
@@ -3116,8 +3309,8 @@
       {
         "current": {
           "selected": true,
-          "text": "ea04",
-          "value": "ea04"
+          "text": "ea01",
+          "value": "ea01"
         },
         "hide": 0,
         "includeAll": false,
@@ -3125,7 +3318,7 @@
         "name": "Antenna",
         "options": [
           {
-            "selected": false,
+            "selected": true,
             "text": "ea01",
             "value": "ea01"
           },
@@ -3140,7 +3333,7 @@
             "value": "ea03"
           },
           {
-            "selected": true,
+            "selected": false,
             "text": "ea04",
             "value": "ea04"
           },
@@ -3280,6 +3473,6 @@
   "timezone": "",
   "title": "COSMIC-VLA-DELAY",
   "uid": "1Ts9nb8Vz",
-  "version": 32,
+  "version": 38,
   "weekStart": ""
 }

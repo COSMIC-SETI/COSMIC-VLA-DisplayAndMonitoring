@@ -56,7 +56,7 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 6,
+        "w": 8,
         "x": 0,
         "y": 0
       },
@@ -118,6 +118,278 @@
       ],
       "title": "Antenna Pad location",
       "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "XeuuDYUVz"
+      },
+      "description": "The current FPGA time that the F-Engines delay is using",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "dateTimeAsLocal"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 8,
+        "y": 0
+      },
+      "id": 52,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value"
+      },
+      "pluginVersion": "9.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "XeuuDYUVz"
+          },
+          "query": "from(bucket: \"fengine\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"feng_stat\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"feng_delay_time\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "refId": "A"
+        }
+      ],
+      "title": "${Antenna} delay block time",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "XeuuDYUVz"
+      },
+      "description": "The current FPGA time that the F-Engines lo is using",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "dateTimeAsLocal"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 12,
+        "y": 0
+      },
+      "id": 50,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value"
+      },
+      "pluginVersion": "9.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "XeuuDYUVz"
+          },
+          "query": "from(bucket: \"fengine\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"feng_stat\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"feng_lo_time\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "refId": "A"
+        }
+      ],
+      "title": "${Antenna} lo block time",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "XeuuDYUVz"
+      },
+      "description": "The current FPGA time that the F-Engines phaserotate is using",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "dateTimeAsLocal"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 16,
+        "y": 0
+      },
+      "id": 51,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value"
+      },
+      "pluginVersion": "9.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "XeuuDYUVz"
+          },
+          "query": "from(bucket: \"fengine\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"feng_stat\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"feng_phaserotate_time\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "refId": "A"
+        }
+      ],
+      "title": "${Antenna} phaserotate block time",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "XeuuDYUVz"
+      },
+      "description": "A boolean checks that will print match if lo, delay and phaserotate times match to within 0.1s and overall match current unix time to within 1s.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "yellow",
+                  "index": 0,
+                  "text": "No-match"
+                },
+                "1": {
+                  "color": "green",
+                  "index": 1,
+                  "text": "Match"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 20,
+        "y": 0
+      },
+      "id": 53,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value"
+      },
+      "pluginVersion": "9.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "XeuuDYUVz"
+          },
+          "query": "from(bucket: \"fengine\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"feng_stat\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"feng_time_correct\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "refId": "A"
+        }
+      ],
+      "title": "${Antenna} correct to within 1s",
+      "type": "stat"
     },
     {
       "datasource": {
@@ -275,7 +547,7 @@
           "refId": "ant-disp"
         }
       ],
-      "title": "Displacement of Antenna from array centre",
+      "title": "Displacement of all Antenna from array centre",
       "type": "timeseries"
     },
     {
@@ -1033,7 +1305,7 @@
           "refId": "A"
         }
       ],
-      "title": "Equalisation Coefficient state",
+      "title": "Equalisation Coefficient state for ${Antenna}",
       "type": "row"
     },
     {
@@ -1267,7 +1539,7 @@
           "tags": []
         }
       ],
-      "title": "Equalisation coefficient identical across the band",
+      "title": "Equalisation coefficient identical across the band for ${Antenna}",
       "type": "stat"
     },
     {
@@ -1293,7 +1565,7 @@
           "refId": "A"
         }
       ],
-      "title": "F-Engine input stats",
+      "title": "F-Engine input stats for ${Antenna}",
       "type": "row"
     },
     {
@@ -1539,7 +1811,7 @@
           "tags": []
         }
       ],
-      "title": "Input data power",
+      "title": "Input data power for ${Antenna}",
       "type": "timeseries"
     },
     {
@@ -1662,7 +1934,7 @@
           "tags": []
         }
       ],
-      "title": "Input data rms",
+      "title": "Input data rms for ${Antenna}",
       "type": "timeseries"
     }
   ],
@@ -1675,8 +1947,8 @@
       {
         "current": {
           "selected": true,
-          "text": "ea06",
-          "value": "ea06"
+          "text": "ea01",
+          "value": "ea01"
         },
         "description": "List of antenna to inspect F-Engine state of",
         "hide": 0,
@@ -1685,7 +1957,7 @@
         "name": "Antenna",
         "options": [
           {
-            "selected": false,
+            "selected": true,
             "text": "ea01",
             "value": "ea01"
           },
@@ -1710,7 +1982,7 @@
             "value": "ea05"
           },
           {
-            "selected": true,
+            "selected": false,
             "text": "ea06",
             "value": "ea06"
           },
@@ -1840,6 +2112,6 @@
   "timezone": "",
   "title": "COSMIC-VLA-ANTENNA",
   "uid": "JdieqMQ4z",
-  "version": 24,
+  "version": 28,
   "weekStart": ""
 }
