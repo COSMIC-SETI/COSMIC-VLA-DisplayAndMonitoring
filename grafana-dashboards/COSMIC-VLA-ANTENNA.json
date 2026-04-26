@@ -18,13 +18,11 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 14,
+  "id": 0,
   "links": [],
-  "liveNow": false,
   "panels": [
     {
       "datasource": {
-        "type": "influxdb",
         "uid": "XeuuDYUVz"
       },
       "description": "On which VLA pad the specified antenna sits.\nPolled every 60s.",
@@ -39,6 +37,9 @@
               "type": "auto"
             },
             "filterable": false,
+            "footer": {
+              "reducers": []
+            },
             "inspect": false
           },
           "mappings": [],
@@ -47,7 +48,11 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
               }
             ]
           }
@@ -63,57 +68,33 @@
       "id": 6,
       "options": {
         "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
         "showHeader": true
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "XeuuDYUVz"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "from(bucket: \"fengine\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"feng_stat\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"ant_pad\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
-          "refId": "Padfetch",
-          "resultFormat": "time_series",
-          "select": [
-            [
+          "dataset": "iox",
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  \"time\",\r\n  \"ant_pad\"\r\nFROM \"feng_stat\"\r\nWHERE \"ant\" = '${Antenna}'\r\n  AND \"ant_pad\" IS NOT NULL\r\n  AND $__timeFilter(\"time\")\r\nORDER BY \"time\" DESC\r\nLIMIT 1",
+          "refId": "A",
+          "sql": {
+            "columns": [
               {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
               {
-                "params": [],
-                "type": "mean"
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
               }
             ]
-          ],
-          "tags": []
+          }
         }
       ],
       "title": "Antenna Pad location",
@@ -136,7 +117,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -160,6 +141,7 @@
         "graphMode": "none",
         "justifyMode": "center",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -167,17 +149,40 @@
           "fields": "",
           "values": false
         },
-        "textMode": "value"
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
+          "dataset": "iox",
           "datasource": {
             "type": "influxdb",
             "uid": "XeuuDYUVz"
           },
+          "editorMode": "code",
+          "format": "table",
           "query": "from(bucket: \"fengine\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"feng_stat\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"feng_delay_time\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
-          "refId": "A"
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  \"time\",\r\n  \"feng_delay_time\"\r\nFROM \"feng_stat\"\r\nWHERE \"ant\" = '${Antenna}'\r\n  AND \"feng_delay_time\" IS NOT NULL\r\n  AND $__timeFilter(\"time\")\r\nORDER BY \"time\" DESC\r\nLIMIT 1",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          }
         }
       ],
       "title": "${Antenna} delay block time",
@@ -200,7 +205,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -224,6 +229,7 @@
         "graphMode": "none",
         "justifyMode": "center",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -231,17 +237,40 @@
           "fields": "",
           "values": false
         },
-        "textMode": "value"
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
+          "dataset": "iox",
           "datasource": {
             "type": "influxdb",
             "uid": "XeuuDYUVz"
           },
+          "editorMode": "code",
+          "format": "table",
           "query": "from(bucket: \"fengine\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"feng_stat\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"feng_lo_time\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
-          "refId": "A"
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  \"time\",\r\n  \"feng_lo_time\"\r\nFROM \"feng_stat\"\r\nWHERE \"ant\" = '${Antenna}'\r\n  AND \"feng_lo_time\" IS NOT NULL\r\n  AND $__timeFilter(\"time\")\r\nORDER BY \"time\" DESC\r\nLIMIT 1",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          }
         }
       ],
       "title": "${Antenna} lo block time",
@@ -264,7 +293,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -288,6 +317,7 @@
         "graphMode": "none",
         "justifyMode": "center",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -295,17 +325,40 @@
           "fields": "",
           "values": false
         },
-        "textMode": "value"
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
+          "dataset": "iox",
           "datasource": {
             "type": "influxdb",
             "uid": "XeuuDYUVz"
           },
+          "editorMode": "code",
+          "format": "table",
           "query": "from(bucket: \"fengine\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"feng_stat\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"feng_phaserotate_time\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
-          "refId": "A"
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  \"time\",\r\n  \"feng_phaserotate_time\"\r\nFROM \"feng_stat\"\r\nWHERE \"ant\" = '${Antenna}'\r\n  AND \"feng_phaserotate_time\" IS NOT NULL\r\n  AND $__timeFilter(\"time\")\r\nORDER BY \"time\" DESC\r\nLIMIT 1",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          }
         }
       ],
       "title": "${Antenna} phaserotate block time",
@@ -344,7 +397,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -352,7 +405,7 @@
               }
             ]
           },
-          "unit": "none"
+          "unit": "string"
         },
         "overrides": []
       },
@@ -365,9 +418,10 @@
       "id": 53,
       "options": {
         "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "center",
+        "graphMode": "area",
+        "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -375,17 +429,40 @@
           "fields": "",
           "values": false
         },
-        "textMode": "value"
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
+          "dataset": "iox",
           "datasource": {
             "type": "influxdb",
             "uid": "XeuuDYUVz"
           },
+          "editorMode": "code",
+          "format": "time_series",
           "query": "from(bucket: \"fengine\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"feng_stat\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"feng_time_correct\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
-          "refId": "A"
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  \"time\",\r\n  \"feng_time_correct\"\r\nFROM \"feng_stat\"\r\nWHERE \"ant\" = '${Antenna}'\r\n  AND \"feng_time_correct\" IS NOT NULL\r\n  AND $__timeFilter(\"time\")\r\nORDER BY \"time\" DESC\r\nLIMIT 1",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          }
         }
       ],
       "title": "${Antenna} correct to within 1s",
@@ -408,6 +485,9 @@
               "type": "auto"
             },
             "filterable": false,
+            "footer": {
+              "reducers": []
+            },
             "inspect": false
           },
           "mappings": [],
@@ -416,7 +496,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -428,7 +508,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
+        "h": 4,
         "w": 24,
         "x": 0,
         "y": 4
@@ -436,29 +516,167 @@
       "id": 4,
       "options": {
         "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
         "showHeader": true
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
+          "dataset": "iox",
           "datasource": {
             "type": "influxdb",
             "uid": "XeuuDYUVz"
           },
+          "editorMode": "code",
+          "format": "table",
           "query": "from(bucket: \"fengine\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ant_stat\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"path\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
-          "refId": "device-map"
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  \"time\",\r\n  \"path\" AS \"ant_path\" \r\nFROM \"ant_stat\"\r\nWHERE \"ant\" = '${Antenna}'\r\n  AND \"path\" IS NOT NULL\r\n  AND $__timeFilter(\"time\")\r\nORDER BY \"time\" DESC\r\nLIMIT 1",
+          "refId": "device-map",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          }
         }
       ],
       "title": "Antenna to Fengine device map",
       "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "XeuuDYUVz"
+      },
+      "description": "The PFB overflow count for all antenna.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      },
+      "id": 54,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.2.1",
+      "targets": [
+        {
+          "dataset": "iox",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "XeuuDYUVz"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "query": "from(bucket: \"fengine\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"feng_stat\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"feng_pfb_overflow_count\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  \"time\",\r\n  \"ant\",\r\n  \"feng_pfb_overflow_count\"\r\nFROM \"feng_stat\"\r\nWHERE \"feng_pfb_overflow_count\" IS NOT NULL\r\n  AND $__timeFilter(\"time\")\r\nORDER BY \"time\" ASC",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          }
+        }
+      ],
+      "title": "All antenna PFB overflow count",
+      "transformations": [
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "ant"
+            ],
+            "keepFields": false
+          }
+        }
+      ],
+      "type": "timeseries"
     },
     {
       "datasource": {
@@ -472,30 +690,21 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
+            "fillOpacity": 80,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
             },
-            "lineInterpolation": "linear",
             "lineWidth": 1,
-            "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
             },
             "thresholdsStyle": {
               "mode": "off"
@@ -507,7 +716,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               }
             ]
           },
@@ -519,60 +728,76 @@
         "h": 19,
         "w": 24,
         "x": 0,
-        "y": 9
+        "y": 15
       },
       "id": 2,
       "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
         "legend": {
-          "calcs": [
-            "last"
-          ],
+          "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
           "showLegend": true
         },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
-        }
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
+          "dataset": "iox",
           "datasource": {
             "type": "influxdb",
             "uid": "XeuuDYUVz"
           },
+          "editorMode": "code",
+          "format": "table",
           "query": "from(bucket: \"fengine\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ant_stat\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"displacement\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"ea01\" or r[\"ant\"] == \"ea05\" or r[\"ant\"] == \"ea02\" or r[\"ant\"] == \"ea03\" or r[\"ant\"] == \"ea04\" or r[\"ant\"] == \"ea06\" or r[\"ant\"] == \"ea07\" or r[\"ant\"] == \"ea08\" or r[\"ant\"] == \"ea09\" or r[\"ant\"] == \"ea10\" or r[\"ant\"] == \"ea11\" or r[\"ant\"] == \"ea12\" or r[\"ant\"] == \"ea13\" or r[\"ant\"] == \"ea14\" or r[\"ant\"] == \"ea15\" or r[\"ant\"] == \"ea16\" or r[\"ant\"] == \"ea17\" or r[\"ant\"] == \"ea18\" or r[\"ant\"] == \"ea19\" or r[\"ant\"] == \"ea20\" or r[\"ant\"] == \"ea21\" or r[\"ant\"] == \"ea22\" or r[\"ant\"] == \"ea24\" or r[\"ant\"] == \"ea23\" or r[\"ant\"] == \"ea25\" or r[\"ant\"] == \"ea27\" or r[\"ant\"] == \"ea26\" or r[\"ant\"] == \"ea28\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
-          "refId": "ant-disp"
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  \"ant\",\r\n  \"displacement\"\r\nFROM (\r\n  SELECT\r\n    \"ant\",\r\n    \"displacement\",\r\n    ROW_NUMBER() OVER (PARTITION BY \"ant\" ORDER BY \"time\" DESC) AS rn\r\n  FROM \"ant_stat\"\r\n  WHERE \"displacement\" IS NOT NULL\r\n    AND $__timeFilter(\"time\")\r\n)\r\nWHERE rn = 1\r\nORDER BY \"ant\" ASC\r\n",
+          "refId": "ant-disp",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          }
         }
       ],
       "title": "Displacement of all Antenna from array centre",
-      "type": "timeseries"
+      "type": "barchart"
     },
     {
       "collapsed": false,
-      "datasource": {
-        "type": "prometheus",
-        "uid": "louR3C0Vz"
-      },
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 28
+        "y": 34
       },
       "id": 44,
       "panels": [],
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "louR3C0Vz"
-          },
-          "refId": "A"
-        }
-      ],
       "title": "F-Engine DTS state",
       "type": "row"
     },
@@ -585,45 +810,31 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "mode": "thresholds"
           },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "red",
+                  "index": 1,
+                  "text": "Bad"
+                },
+                "1": {
+                  "color": "green",
+                  "index": 0,
+                  "text": "Good"
+                }
+              },
+              "type": "value"
             }
-          },
-          "mappings": [],
+          ],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -639,28 +850,36 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 29
+        "y": 35
       },
       "id": 36,
       "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
         },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "asc"
-        }
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
+          "dataset": "iox",
           "datasource": {
             "type": "influxdb",
             "uid": "XeuuDYUVz"
           },
+          "editorMode": "code",
+          "format": "table",
           "groupBy": [
             {
               "params": [
@@ -678,6 +897,8 @@
           "orderByTime": "ASC",
           "policy": "default",
           "query": "from(bucket: \"fengine\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"feng_stat\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"dts_state_ok\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"ea01\" or r[\"ant\"] == \"ea02\" or r[\"ant\"] == \"ea03\" or r[\"ant\"] == \"ea04\" or r[\"ant\"] == \"ea05\" or r[\"ant\"] == \"ea06\" or r[\"ant\"] == \"ea07\" or r[\"ant\"] == \"ea08\" or r[\"ant\"] == \"ea09\" or r[\"ant\"] == \"ea10\" or r[\"ant\"] == \"ea11\" or r[\"ant\"] == \"ea12\" or r[\"ant\"] == \"ea13\" or r[\"ant\"] == \"ea14\" or r[\"ant\"] == \"ea15\" or r[\"ant\"] == \"ea17\" or r[\"ant\"] == \"ea16\" or r[\"ant\"] == \"ea18\" or r[\"ant\"] == \"ea19\" or r[\"ant\"] == \"ea20\" or r[\"ant\"] == \"ea21\" or r[\"ant\"] == \"ea22\" or r[\"ant\"] == \"ea23\" or r[\"ant\"] == \"ea24\" or r[\"ant\"] == \"ea25\" or r[\"ant\"] == \"ea26\" or r[\"ant\"] == \"ea27\" or r[\"ant\"] == \"ea28\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  \"time\",\r\n  \"ant\",\r\n  \"dts_state_ok\"\r\nFROM \"feng_stat\"\r\nWHERE \"dts_state_ok\" IS NOT NULL\r\n  AND $__timeFilter(\"time\")\r\nORDER BY \"time\" ASC",
           "refId": "All-feng-dts-state",
           "resultFormat": "time_series",
           "select": [
@@ -694,15 +915,30 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          },
           "tags": []
         }
       ],
       "title": "All antenna dts ok",
-      "type": "timeseries"
+      "type": "stat"
     },
     {
       "datasource": {
-        "type": "influxdb",
         "uid": "XeuuDYUVz"
       },
       "description": "The reported sync state of DTS signals. Will report OK if all 12 lanes of a DTS link appear to be locked together.\nAs returned by:\nfeng.dts.get_status_dict()['state_ok']['sync_ok'].\nPolled every 60s.",
@@ -715,9 +951,13 @@
             {
               "options": {
                 "0": {
+                  "color": "red",
+                  "index": 1,
                   "text": "Bad"
                 },
                 "1": {
+                  "color": "green",
+                  "index": 0,
                   "text": "Good"
                 }
               },
@@ -728,19 +968,15 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
-              },
-              {
-                "color": "red",
+                "color": "green",
                 "value": 0
               },
               {
-                "color": "green",
-                "value": 1
+                "color": "red",
+                "value": 80
               }
             ]
-          },
-          "unit": "short"
+          }
         },
         "overrides": []
       },
@@ -748,7 +984,7 @@
         "h": 6,
         "w": 24,
         "x": 0,
-        "y": 39
+        "y": 45
       },
       "id": 38,
       "options": {
@@ -756,57 +992,44 @@
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
           ],
           "fields": "",
-          "values": false
+          "values": true
         },
+        "showPercentChange": false,
         "text": {},
-        "textMode": "auto"
+        "textMode": "value_and_name",
+        "wideLayout": true
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "XeuuDYUVz"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "from(bucket: \"fengine\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"feng_stat\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"dts_state_sync_ok\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"ea01\" or r[\"ant\"] == \"ea02\" or r[\"ant\"] == \"ea03\" or r[\"ant\"] == \"ea04\" or r[\"ant\"] == \"ea05\" or r[\"ant\"] == \"ea06\" or r[\"ant\"] == \"ea07\" or r[\"ant\"] == \"ea08\" or r[\"ant\"] == \"ea09\" or r[\"ant\"] == \"ea10\" or r[\"ant\"] == \"ea11\" or r[\"ant\"] == \"ea12\" or r[\"ant\"] == \"ea13\" or r[\"ant\"] == \"ea14\" or r[\"ant\"] == \"ea15\" or r[\"ant\"] == \"ea17\" or r[\"ant\"] == \"ea16\" or r[\"ant\"] == \"ea18\" or r[\"ant\"] == \"ea19\" or r[\"ant\"] == \"ea20\" or r[\"ant\"] == \"ea21\" or r[\"ant\"] == \"ea22\" or r[\"ant\"] == \"ea23\" or r[\"ant\"] == \"ea24\" or r[\"ant\"] == \"ea25\" or r[\"ant\"] == \"ea26\" or r[\"ant\"] == \"ea27\" or r[\"ant\"] == \"ea28\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"last\")",
-          "refId": "All-feng-dts-state",
-          "resultFormat": "time_series",
-          "select": [
-            [
+          "dataset": "iox",
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  \"time\",\r\n  \"ant\",\r\n  \"dts_state_sync_ok\"\r\nFROM (\r\n  SELECT\r\n    \"time\",\r\n    \"ant\",\r\n    \"dts_state_sync_ok\",\r\n    ROW_NUMBER() OVER (PARTITION BY \"ant\" ORDER BY \"time\" DESC) AS rn\r\n  FROM \"feng_stat\"\r\n  WHERE \"dts_state_sync_ok\" IS NOT NULL\r\n    AND $__timeFilter(\"time\")\r\n)\r\nWHERE rn = 1\r\nORDER BY \"ant\" ASC",
+          "refId": "A",
+          "sql": {
+            "columns": [
               {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
               {
-                "params": [],
-                "type": "mean"
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
               }
             ]
-          ],
-          "tags": []
+          }
         }
       ],
       "title": "All antenna dts state sync ok",
@@ -827,9 +1050,13 @@
             {
               "options": {
                 "0": {
+                  "color": "red",
+                  "index": 1,
                   "text": "Bad"
                 },
                 "1": {
+                  "color": "green",
+                  "index": 0,
                   "text": "Good"
                 }
               },
@@ -840,7 +1067,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -860,7 +1088,7 @@
         "h": 6,
         "w": 24,
         "x": 0,
-        "y": 45
+        "y": 51
       },
       "id": 40,
       "options": {
@@ -868,23 +1096,29 @@
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
           ],
           "fields": "",
-          "values": false
+          "values": true
         },
+        "showPercentChange": false,
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
+          "dataset": "iox",
           "datasource": {
             "type": "influxdb",
             "uid": "XeuuDYUVz"
           },
+          "editorMode": "code",
+          "format": "table",
           "groupBy": [
             {
               "params": [
@@ -902,6 +1136,8 @@
           "orderByTime": "ASC",
           "policy": "default",
           "query": "from(bucket: \"fengine\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"feng_stat\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"dts_state_lock_ok\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"ea01\" or r[\"ant\"] == \"ea02\" or r[\"ant\"] == \"ea03\" or r[\"ant\"] == \"ea04\" or r[\"ant\"] == \"ea05\" or r[\"ant\"] == \"ea06\" or r[\"ant\"] == \"ea07\" or r[\"ant\"] == \"ea08\" or r[\"ant\"] == \"ea09\" or r[\"ant\"] == \"ea10\" or r[\"ant\"] == \"ea11\" or r[\"ant\"] == \"ea12\" or r[\"ant\"] == \"ea13\" or r[\"ant\"] == \"ea14\" or r[\"ant\"] == \"ea15\" or r[\"ant\"] == \"ea17\" or r[\"ant\"] == \"ea16\" or r[\"ant\"] == \"ea18\" or r[\"ant\"] == \"ea19\" or r[\"ant\"] == \"ea20\" or r[\"ant\"] == \"ea21\" or r[\"ant\"] == \"ea22\" or r[\"ant\"] == \"ea23\" or r[\"ant\"] == \"ea24\" or r[\"ant\"] == \"ea25\" or r[\"ant\"] == \"ea26\" or r[\"ant\"] == \"ea27\" or r[\"ant\"] == \"ea28\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  \"time\",\r\n  \"ant\",\r\n  \"dts_state_lock_ok\"\r\nFROM (\r\n  SELECT\r\n    \"time\",\r\n    \"ant\",\r\n    \"dts_state_lock_ok\",\r\n    ROW_NUMBER() OVER (PARTITION BY \"ant\" ORDER BY \"time\" DESC) AS rn\r\n  FROM \"feng_stat\"\r\n  WHERE \"dts_state_lock_ok\" IS NOT NULL\r\n    AND $__timeFilter(\"time\")\r\n)\r\nWHERE rn = 1\r\nORDER BY \"ant\" ASC",
           "refId": "All-feng-dts-state",
           "resultFormat": "time_series",
           "select": [
@@ -918,6 +1154,22 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          },
           "tags": []
         }
       ],
@@ -952,7 +1204,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -972,7 +1225,7 @@
         "h": 6,
         "w": 24,
         "x": 0,
-        "y": 51
+        "y": 57
       },
       "id": 42,
       "options": {
@@ -980,23 +1233,29 @@
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
           ],
           "fields": "",
-          "values": false
+          "values": true
         },
+        "showPercentChange": false,
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
+          "dataset": "iox",
           "datasource": {
             "type": "influxdb",
             "uid": "XeuuDYUVz"
           },
+          "editorMode": "code",
+          "format": "table",
           "groupBy": [
             {
               "params": [
@@ -1014,6 +1273,8 @@
           "orderByTime": "ASC",
           "policy": "default",
           "query": "from(bucket: \"fengine\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"feng_stat\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"dts_state_gty_lock_ok\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"ea01\" or r[\"ant\"] == \"ea02\" or r[\"ant\"] == \"ea03\" or r[\"ant\"] == \"ea04\" or r[\"ant\"] == \"ea05\" or r[\"ant\"] == \"ea06\" or r[\"ant\"] == \"ea07\" or r[\"ant\"] == \"ea08\" or r[\"ant\"] == \"ea09\" or r[\"ant\"] == \"ea10\" or r[\"ant\"] == \"ea11\" or r[\"ant\"] == \"ea12\" or r[\"ant\"] == \"ea13\" or r[\"ant\"] == \"ea14\" or r[\"ant\"] == \"ea15\" or r[\"ant\"] == \"ea17\" or r[\"ant\"] == \"ea16\" or r[\"ant\"] == \"ea18\" or r[\"ant\"] == \"ea19\" or r[\"ant\"] == \"ea20\" or r[\"ant\"] == \"ea21\" or r[\"ant\"] == \"ea22\" or r[\"ant\"] == \"ea23\" or r[\"ant\"] == \"ea24\" or r[\"ant\"] == \"ea25\" or r[\"ant\"] == \"ea26\" or r[\"ant\"] == \"ea27\" or r[\"ant\"] == \"ea28\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  \"time\",\r\n  \"ant\",\r\n  \"dts_state_gty_lock_ok\"\r\nFROM (\r\n  SELECT\r\n    \"time\",\r\n    \"ant\",\r\n    \"dts_state_gty_lock_ok\",\r\n    ROW_NUMBER() OVER (PARTITION BY \"ant\" ORDER BY \"time\" DESC) AS rn\r\n  FROM \"feng_stat\"\r\n  WHERE \"dts_state_gty_lock_ok\" IS NOT NULL\r\n    AND $__timeFilter(\"time\")\r\n)\r\nWHERE rn = 1\r\nORDER BY \"ant\" ASC",
           "refId": "All-feng-dts-state",
           "resultFormat": "time_series",
           "select": [
@@ -1030,6 +1291,22 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          },
           "tags": []
         }
       ],
@@ -1048,11 +1325,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -1061,6 +1340,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1068,6 +1348,7 @@
               "type": "linear"
             },
             "showPoints": "never",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -1082,7 +1363,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -1098,7 +1380,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 57
+        "y": 63
       },
       "id": 46,
       "options": {
@@ -1109,17 +1391,21 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "desc"
         }
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
+          "dataset": "iox",
           "datasource": {
             "type": "influxdb",
             "uid": "XeuuDYUVz"
           },
+          "editorMode": "code",
+          "format": "table",
           "groupBy": [
             {
               "params": [
@@ -1137,6 +1423,8 @@
           "orderByTime": "ASC",
           "policy": "default",
           "query": "from(bucket: \"fengine\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"feng_stat\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"acc\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"ea01\" or r[\"ant\"] == \"ea02\" or r[\"ant\"] == \"ea03\" or r[\"ant\"] == \"ea04\" or r[\"ant\"] == \"ea05\" or r[\"ant\"] == \"ea07\" or r[\"ant\"] == \"ea06\" or r[\"ant\"] == \"ea08\" or r[\"ant\"] == \"ea10\" or r[\"ant\"] == \"ea09\" or r[\"ant\"] == \"ea11\" or r[\"ant\"] == \"ea13\" or r[\"ant\"] == \"ea12\" or r[\"ant\"] == \"ea14\" or r[\"ant\"] == \"ea15\" or r[\"ant\"] == \"ea16\" or r[\"ant\"] == \"ea17\" or r[\"ant\"] == \"ea18\" or r[\"ant\"] == \"ea19\" or r[\"ant\"] == \"ea20\" or r[\"ant\"] == \"ea21\" or r[\"ant\"] == \"ea22\" or r[\"ant\"] == \"ea23\" or r[\"ant\"] == \"ea24\" or r[\"ant\"] == \"ea25\" or r[\"ant\"] == \"ea26\" or r[\"ant\"] == \"ea28\" or r[\"ant\"] == \"ea27\")\r\n  |> filter(fn: (r) => r[\"dts_lane\"] == \"0\" or r[\"dts_lane\"] == \"1\" or r[\"dts_lane\"] == \"10\" or r[\"dts_lane\"] == \"11\" or r[\"dts_lane\"] == \"2\" or r[\"dts_lane\"] == \"3\" or r[\"dts_lane\"] == \"4\" or r[\"dts_lane\"] == \"5\" or r[\"dts_lane\"] == \"6\" or r[\"dts_lane\"] == \"7\" or r[\"dts_lane\"] == \"8\" or r[\"dts_lane\"] == \"9\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  \"time\",\r\n  \"ant\",\r\n  SUM(\"acc\") AS \"total_acc_errors\"\r\nFROM \"feng_stat\"\r\nWHERE \"acc\" IS NOT NULL\r\n  AND $__timeFilter(\"time\")\r\nGROUP BY \"time\", \"ant\"\r\nORDER BY \"time\" ASC",
           "refId": "dts-acc",
           "resultFormat": "time_series",
           "select": [
@@ -1153,10 +1441,37 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          },
           "tags": []
         }
       ],
       "title": "All antenna DTS Accumulated Parity Errors",
+      "transformations": [
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "ant"
+            ],
+            "keepFields": false
+          }
+        }
+      ],
       "type": "timeseries"
     },
     {
@@ -1171,11 +1486,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -1184,6 +1501,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1191,6 +1509,7 @@
               "type": "linear"
             },
             "showPoints": "never",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -1205,7 +1524,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -1221,7 +1541,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 68
+        "y": 74
       },
       "id": 48,
       "options": {
@@ -1232,17 +1552,21 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "desc"
         }
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
+          "dataset": "iox",
           "datasource": {
             "type": "influxdb",
             "uid": "XeuuDYUVz"
           },
+          "editorMode": "code",
+          "format": "table",
           "groupBy": [
             {
               "params": [
@@ -1260,6 +1584,8 @@
           "orderByTime": "ASC",
           "policy": "default",
           "query": "from(bucket: \"fengine\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"feng_stat\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"count\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"ea01\" or r[\"ant\"] == \"ea02\" or r[\"ant\"] == \"ea03\" or r[\"ant\"] == \"ea04\" or r[\"ant\"] == \"ea05\" or r[\"ant\"] == \"ea07\" or r[\"ant\"] == \"ea06\" or r[\"ant\"] == \"ea08\" or r[\"ant\"] == \"ea10\" or r[\"ant\"] == \"ea09\" or r[\"ant\"] == \"ea11\" or r[\"ant\"] == \"ea13\" or r[\"ant\"] == \"ea12\" or r[\"ant\"] == \"ea14\" or r[\"ant\"] == \"ea15\" or r[\"ant\"] == \"ea16\" or r[\"ant\"] == \"ea17\" or r[\"ant\"] == \"ea18\" or r[\"ant\"] == \"ea19\" or r[\"ant\"] == \"ea20\" or r[\"ant\"] == \"ea21\" or r[\"ant\"] == \"ea22\" or r[\"ant\"] == \"ea23\" or r[\"ant\"] == \"ea24\" or r[\"ant\"] == \"ea25\" or r[\"ant\"] == \"ea26\" or r[\"ant\"] == \"ea28\" or r[\"ant\"] == \"ea27\")\r\n  |> filter(fn: (r) => r[\"dts_lane\"] == \"0\" or r[\"dts_lane\"] == \"1\" or r[\"dts_lane\"] == \"10\" or r[\"dts_lane\"] == \"11\" or r[\"dts_lane\"] == \"2\" or r[\"dts_lane\"] == \"3\" or r[\"dts_lane\"] == \"4\" or r[\"dts_lane\"] == \"5\" or r[\"dts_lane\"] == \"6\" or r[\"dts_lane\"] == \"7\" or r[\"dts_lane\"] == \"8\" or r[\"dts_lane\"] == \"9\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  \"time\",\r\n  \"ant\",\r\n  SUM(\"count\") AS \"total_errors_per_second\"\r\nFROM \"feng_stat\"\r\nWHERE \"count\" IS NOT NULL\r\n  AND $__timeFilter(\"time\")\r\nGROUP BY \"time\", \"ant\"\r\nORDER BY \"time\" ASC",
           "refId": "dts-count",
           "resultFormat": "time_series",
           "select": [
@@ -1276,35 +1602,49 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          },
           "tags": []
         }
       ],
       "title": "All antenna DTS Parity Errors per second",
+      "transformations": [
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "ant"
+            ],
+            "keepFields": false
+          }
+        }
+      ],
       "type": "timeseries"
     },
     {
       "collapsed": false,
-      "datasource": {
-        "type": "prometheus",
-        "uid": "louR3C0Vz"
-      },
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 79
+        "y": 85
       },
       "id": 34,
       "panels": [],
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "louR3C0Vz"
-          },
-          "refId": "A"
-        }
-      ],
       "title": "Equalisation Coefficient state for ${Antenna}",
       "type": "row"
     },
@@ -1320,11 +1660,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -1333,6 +1675,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1340,6 +1683,7 @@
               "type": "linear"
             },
             "showPoints": "never",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -1354,7 +1698,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -1370,7 +1715,7 @@
         "h": 8,
         "w": 18,
         "x": 0,
-        "y": 80
+        "y": 86
       },
       "id": 30,
       "options": {
@@ -1381,17 +1726,21 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
+          "dataset": "iox",
           "datasource": {
             "type": "influxdb",
             "uid": "XeuuDYUVz"
           },
+          "editorMode": "code",
+          "format": "table",
           "groupBy": [
             {
               "params": [
@@ -1409,6 +1758,8 @@
           "orderByTime": "ASC",
           "policy": "default",
           "query": "from(bucket: \"fengine\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"feng_stat\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"eq_mean_coeff\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> filter(fn: (r) => r[\"stream\"] == \"0\" or r[\"stream\"] == \"1\" or r[\"stream\"] == \"2\" or r[\"stream\"] == \"3\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  \"time\",\r\n  \"ant\",\r\n  AVG(\"eq_mean_coeff\") AS \"avg_eq_mean_coeff\"\r\nFROM \"feng_stat\"\r\nWHERE \"eq_mean_coeff\" IS NOT NULL\r\n  AND $__timeFilter(\"time\")\r\nGROUP BY \"time\", \"ant\"\r\nORDER BY \"time\" ASC",
           "refId": "eqmean",
           "resultFormat": "time_series",
           "select": [
@@ -1425,10 +1776,37 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          },
           "tags": []
         }
       ],
       "title": "Equalisation coefficient mean across frequency",
+      "transformations": [
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "ant"
+            ],
+            "keepFields": false
+          }
+        }
+      ],
       "type": "timeseries"
     },
     {
@@ -1459,7 +1837,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -1478,7 +1857,7 @@
         "h": 8,
         "w": 6,
         "x": 18,
-        "y": 80
+        "y": 86
       },
       "id": 32,
       "options": {
@@ -1486,6 +1865,7 @@
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -1493,16 +1873,21 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "text": {},
-        "textMode": "auto"
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
+          "dataset": "iox",
           "datasource": {
             "type": "influxdb",
             "uid": "XeuuDYUVz"
           },
+          "editorMode": "code",
+          "format": "table",
           "groupBy": [
             {
               "params": [
@@ -1520,6 +1905,8 @@
           "orderByTime": "ASC",
           "policy": "default",
           "query": "from(bucket: \"fengine\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"feng_stat\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"eq_identical_coeffs\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"ea01\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  \"time\",\r\n  \"eq_identical_coeffs\"\r\nFROM \"feng_stat\"\r\nWHERE \"ant\" = '${Antenna}'\r\n  AND \"eq_identical_coeffs\" IS NOT NULL\r\n  AND $__timeFilter(\"time\")\r\nORDER BY \"time\" DESC\r\nLIMIT 1",
           "refId": "eq identical",
           "resultFormat": "time_series",
           "select": [
@@ -1536,6 +1923,22 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          },
           "tags": []
         }
       ],
@@ -1544,27 +1947,14 @@
     },
     {
       "collapsed": false,
-      "datasource": {
-        "type": "prometheus",
-        "uid": "louR3C0Vz"
-      },
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 88
+        "y": 94
       },
       "id": 22,
       "panels": [],
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "louR3C0Vz"
-          },
-          "refId": "A"
-        }
-      ],
       "title": "F-Engine input stats for ${Antenna}",
       "type": "row"
     },
@@ -1573,18 +1963,20 @@
         "type": "influxdb",
         "uid": "XeuuDYUVz"
       },
-      "description": "Fetched from the cosmic_fengine.input block, this graph depicts the mean input value taken.",
+      "description": "Fetched from the cosmic_fengine.input block, this graph depicts the mean input value taken per stream.",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -1593,6 +1985,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1600,6 +1993,7 @@
               "type": "linear"
             },
             "showPoints": "never",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -1614,7 +2008,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -1630,7 +2025,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 89
+        "y": 95
       },
       "id": 24,
       "options": {
@@ -1641,17 +2036,21 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
+          "dataset": "iox",
           "datasource": {
             "type": "influxdb",
             "uid": "XeuuDYUVz"
           },
+          "editorMode": "code",
+          "format": "table",
           "groupBy": [
             {
               "params": [
@@ -1669,6 +2068,8 @@
           "orderByTime": "ASC",
           "policy": "default",
           "query": "from(bucket: \"fengine\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"feng_stat\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"inpt_mean\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> filter(fn: (r) => r[\"stream\"] == \"0\" or r[\"stream\"] == \"1\" or r[\"stream\"] == \"2\" or r[\"stream\"] == \"3\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  \"time\",\r\n  \"stream\",\r\n  \"inpt_mean\"\r\nFROM \"feng_stat\"\r\nWHERE \"ant\" = '${Antenna}'\r\n  AND \"inpt_mean\" IS NOT NULL\r\n  AND $__timeFilter(\"time\")\r\nORDER BY \"time\" ASC",
           "refId": "Input-Mean",
           "resultFormat": "time_series",
           "select": [
@@ -1685,10 +2086,37 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          },
           "tags": []
         }
       ],
-      "title": "Input data mean",
+      "title": "Input data mean for $Antenna",
+      "transformations": [
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "stream"
+            ],
+            "keepFields": false
+          }
+        }
+      ],
       "type": "timeseries"
     },
     {
@@ -1696,18 +2124,20 @@
         "type": "influxdb",
         "uid": "XeuuDYUVz"
       },
-      "description": "Fetched from the cosmic_fengine.input block, this graph depicts the power input value taken.",
+      "description": "Fetched from the cosmic_fengine.input block, this graph depicts the power input value taken per stream",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -1716,6 +2146,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1723,6 +2154,7 @@
               "type": "linear"
             },
             "showPoints": "never",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -1737,7 +2169,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -1753,7 +2186,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 100
+        "y": 106
       },
       "id": 26,
       "options": {
@@ -1764,17 +2197,21 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
+          "dataset": "iox",
           "datasource": {
             "type": "influxdb",
             "uid": "XeuuDYUVz"
           },
+          "editorMode": "code",
+          "format": "table",
           "groupBy": [
             {
               "params": [
@@ -1792,6 +2229,8 @@
           "orderByTime": "ASC",
           "policy": "default",
           "query": "from(bucket: \"fengine\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"feng_stat\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"inpt_power\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> filter(fn: (r) => r[\"stream\"] == \"0\" or r[\"stream\"] == \"1\" or r[\"stream\"] == \"2\" or r[\"stream\"] == \"3\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  \"time\",\r\n  \"stream\",\r\n  \"inpt_power\"\r\nFROM \"feng_stat\"\r\nWHERE \"ant\" = '${Antenna}'\r\n  AND \"inpt_power\" IS NOT NULL\r\n  AND $__timeFilter(\"time\")\r\nORDER BY \"time\" ASC",
           "refId": "Input-Power",
           "resultFormat": "time_series",
           "select": [
@@ -1808,10 +2247,37 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          },
           "tags": []
         }
       ],
       "title": "Input data power for ${Antenna}",
+      "transformations": [
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "stream"
+            ],
+            "keepFields": false
+          }
+        }
+      ],
       "type": "timeseries"
     },
     {
@@ -1819,18 +2285,20 @@
         "type": "influxdb",
         "uid": "XeuuDYUVz"
       },
-      "description": "Fetched from the cosmic_fengine.input block, this graph depicts the rms input value taken.",
+      "description": "Fetched from the cosmic_fengine.input block, this graph depicts the rms input value taken per stream",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -1839,6 +2307,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1846,6 +2315,7 @@
               "type": "linear"
             },
             "showPoints": "never",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -1860,7 +2330,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -1876,7 +2347,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 111
+        "y": 117
       },
       "id": 28,
       "options": {
@@ -1887,17 +2358,21 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
+          "dataset": "iox",
           "datasource": {
             "type": "influxdb",
             "uid": "XeuuDYUVz"
           },
+          "editorMode": "code",
+          "format": "table",
           "groupBy": [
             {
               "params": [
@@ -1915,6 +2390,8 @@
           "orderByTime": "ASC",
           "policy": "default",
           "query": "from(bucket: \"fengine\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"feng_stat\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"inpt_rms\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"ea01\")\r\n  |> filter(fn: (r) => r[\"stream\"] == \"0\" or r[\"stream\"] == \"1\" or r[\"stream\"] == \"2\" or r[\"stream\"] == \"3\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  \"time\",\r\n  \"stream\",\r\n  \"inpt_rms\"\r\nFROM \"feng_stat\"\r\nWHERE \"ant\" = '${Antenna}'\r\n  AND \"inpt_rms\" IS NOT NULL\r\n  AND $__timeFilter(\"time\")\r\nORDER BY \"time\" ASC",
           "refId": "Input-Power",
           "resultFormat": "time_series",
           "select": [
@@ -1931,29 +2408,53 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          },
           "tags": []
         }
       ],
       "title": "Input data rms for ${Antenna}",
+      "transformations": [
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "stream"
+            ],
+            "keepFields": false
+          }
+        }
+      ],
       "type": "timeseries"
     }
   ],
+  "preload": false,
   "refresh": "",
-  "schemaVersion": 38,
-  "style": "dark",
+  "schemaVersion": 42,
   "tags": [],
   "templating": {
     "list": [
       {
         "current": {
-          "selected": true,
           "text": "ea01",
           "value": "ea01"
         },
         "description": "List of antenna to inspect F-Engine state of",
-        "hide": 0,
         "includeAll": false,
-        "multi": false,
         "name": "Antenna",
         "options": [
           {
@@ -2098,20 +2599,17 @@
           }
         ],
         "query": "ea01, ea02, ea03, ea04, ea05, ea06, ea07, ea08, ea09, ea10, ea11, ea12, ea13, ea14, ea15, ea16, ea17, ea18, ea19, ea20, ea21, ea22, ea23, ea24, ea25, ea26, ea27, ea28",
-        "queryValue": "",
-        "skipUrlSync": false,
         "type": "custom"
       }
     ]
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "COSMIC-VLA-ANTENNA",
   "uid": "JdieqMQ4z",
-  "version": 28,
-  "weekStart": ""
+  "version": 111
 }
