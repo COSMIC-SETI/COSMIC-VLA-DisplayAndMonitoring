@@ -18,16 +18,11 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 10,
+  "id": 0,
   "links": [],
-  "liveNow": false,
   "panels": [
     {
       "collapsed": false,
-      "datasource": {
-        "type": "prometheus",
-        "uid": "louR3C0Vz"
-      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -36,22 +31,13 @@
       },
       "id": 61,
       "panels": [],
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "louR3C0Vz"
-          },
-          "refId": "A"
-        }
-      ],
       "title": "Phase Centre Controller",
       "type": "row"
     },
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "XeuuDYUVz"
+        "uid": "af3478hdssyyob"
       },
       "description": "Plot of Right Ascension in degrees vs loadtime. This is the value instructed to be loaded at loadtime by the phase centre controller. ",
       "fieldConfig": {
@@ -60,11 +46,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "points",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -73,6 +61,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 8,
@@ -80,6 +69,7 @@
               "type": "linear"
             },
             "showPoints": "always",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -95,7 +85,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -122,17 +112,21 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
+          "dataset": "iox",
           "datasource": {
             "type": "influxdb",
-            "uid": "XeuuDYUVz"
+            "uid": "af3478hdssyyob"
           },
+          "editorMode": "code",
+          "format": "table",
           "groupBy": [
             {
               "params": [
@@ -150,6 +144,8 @@
           "orderByTime": "ASC",
           "policy": "default",
           "query": "from(bucket: \"delays\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"phase_centre_controller\")\n  |> filter(fn: (r) => r[\"_field\"] == \"ra_deg\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  \"time\",\n  \"ra_deg\"\nFROM \"phase_centre_controller\"\nWHERE \"ra_deg\" IS NOT NULL\n  AND $__timeFilter(\"time\")\nORDER BY \"time\" ASC",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -166,6 +162,22 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          },
           "tags": []
         }
       ],
@@ -175,7 +187,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "XeuuDYUVz"
+        "uid": "af3478hdssyyob"
       },
       "description": "Plot of Declination in degrees vs loadtime. This is the value instructed to be loaded at loadtime by the phase centre controller. ",
       "fieldConfig": {
@@ -184,11 +196,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "points",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -197,6 +211,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 8,
@@ -204,6 +219,7 @@
               "type": "linear"
             },
             "showPoints": "always",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -219,7 +235,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -246,17 +262,21 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
+          "dataset": "iox",
           "datasource": {
             "type": "influxdb",
-            "uid": "XeuuDYUVz"
+            "uid": "af3478hdssyyob"
           },
+          "editorMode": "code",
+          "format": "table",
           "groupBy": [
             {
               "params": [
@@ -274,6 +294,8 @@
           "orderByTime": "ASC",
           "policy": "default",
           "query": "from(bucket: \"delays\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"phase_centre_controller\")\n  |> filter(fn: (r) => r[\"_field\"] == \"dec_deg\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  \"time\",\n  \"dec_deg\"\nFROM \"phase_centre_controller\"\nWHERE \"dec_deg\" IS NOT NULL\n  AND $__timeFilter(\"time\")\nORDER BY \"time\" ASC",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -290,6 +312,22 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          },
           "tags": []
         }
       ],
@@ -299,7 +337,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "XeuuDYUVz"
+        "uid": "af3478hdssyyob"
       },
       "description": "The sideband values the phase centre controller is putting out for the delay model to track with.",
       "fieldConfig": {
@@ -308,26 +346,30 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 10,
+            "fillOpacity": 0,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "never",
+            "showPoints": "auto",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -337,13 +379,14 @@
               "mode": "off"
             }
           },
+          "displayName": "tune ${__field.labels.tune}",
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -370,17 +413,21 @@
           "showLegend": true
         },
         "tooltip": {
-          "mode": "multi",
+          "hideZeros": false,
+          "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
+          "dataset": "iox",
           "datasource": {
             "type": "influxdb",
-            "uid": "XeuuDYUVz"
+            "uid": "af3478hdssyyob"
           },
+          "editorMode": "code",
+          "format": "table",
           "groupBy": [
             {
               "params": [
@@ -398,6 +445,8 @@
           "orderByTime": "ASC",
           "policy": "default",
           "query": "from(bucket: \"delays\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"phase_centre_controller\")\n  |> filter(fn: (r) => r[\"_field\"] == \"sideband\")\n  |> filter(fn: (r) => r[\"tune\"] == \"0\" or r[\"tune\"] == \"1\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  \"time\",\n  \"tune\",\n  CAST(\"sideband\" AS INT) AS \"sideband\"\nFROM \"phase_centre_controller\"\nWHERE \"sideband\" IS NOT NULL\n  AND $__timeFilter(\"time\")\nORDER BY \"time\" ASC",
           "refId": "sideband",
           "resultFormat": "time_series",
           "select": [
@@ -414,16 +463,43 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          },
           "tags": []
         }
       ],
       "title": "Phase Centre Controller sideband values",
+      "transformations": [
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "tune"
+            ],
+            "keepFields": false
+          }
+        }
+      ],
       "type": "timeseries"
     },
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "XeuuDYUVz"
+        "uid": "af3478hdssyyob"
       },
       "description": "The sslo values the phase centre controller is putting out for the delay model to track with.",
       "fieldConfig": {
@@ -432,11 +508,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -445,6 +523,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -452,6 +531,7 @@
               "type": "linear"
             },
             "showPoints": "never",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -461,13 +541,14 @@
               "mode": "off"
             }
           },
+          "displayName": "tune ${__field.labels.tune}",
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -494,17 +575,21 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
+          "dataset": "iox",
           "datasource": {
             "type": "influxdb",
-            "uid": "XeuuDYUVz"
+            "uid": "af3478hdssyyob"
           },
+          "editorMode": "code",
+          "format": "table",
           "groupBy": [
             {
               "params": [
@@ -522,6 +607,8 @@
           "orderByTime": "ASC",
           "policy": "default",
           "query": "from(bucket: \"delays\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"phase_centre_controller\")\n  |> filter(fn: (r) => r[\"_field\"] == \"sslo\")\n  |> filter(fn: (r) => r[\"tune\"] == \"0\" or r[\"tune\"] == \"1\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  \"time\",\n  \"tune\",\n  \"sslo\"\nFROM \"phase_centre_controller\"\nWHERE \"sslo\" IS NOT NULL\n  AND $__timeFilter(\"time\")\nORDER BY \"time\" ASC",
           "refId": "sideband",
           "resultFormat": "time_series",
           "select": [
@@ -538,18 +625,41 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          },
           "tags": []
         }
       ],
       "title": "Phase Centre Controller sslo values",
+      "transformations": [
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "tune"
+            ],
+            "keepFields": false
+          }
+        }
+      ],
       "type": "timeseries"
     },
     {
       "collapsed": false,
-      "datasource": {
-        "type": "prometheus",
-        "uid": "louR3C0Vz"
-      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -558,22 +668,13 @@
       },
       "id": 27,
       "panels": [],
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "louR3C0Vz"
-          },
-          "refId": "A"
-        }
-      ],
       "title": "Delay Engine Tracking",
       "type": "row"
     },
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "XeuuDYUVz"
+        "uid": "af3478hdssyyob"
       },
       "description": "Plot of Right Ascension in degrees vs loadtime. This is the value received by the delay model from the source finder. The current model delays set to load at loadtime are calculated for this right ascension. Note that there may be up to 5s before the F-Engines reflect these delays as that is the average loadtime.",
       "fieldConfig": {
@@ -582,11 +683,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "points",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -595,6 +698,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 8,
@@ -602,6 +706,7 @@
               "type": "linear"
             },
             "showPoints": "always",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -617,7 +722,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -644,17 +749,21 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
+          "dataset": "iox",
           "datasource": {
             "type": "influxdb",
-            "uid": "XeuuDYUVz"
+            "uid": "af3478hdssyyob"
           },
+          "editorMode": "code",
+          "format": "table",
           "groupBy": [
             {
               "params": [
@@ -672,6 +781,8 @@
           "orderByTime": "ASC",
           "policy": "default",
           "query": "from(bucket: \"delays\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"delay_pointing\")\n  |> filter(fn: (r) => r[\"_field\"] == \"deg_ra\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"last\")",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  \"time\",\n  \"deg_ra\" AS \"right_ascension\"\nFROM \"delay_pointing\"\nWHERE \"deg_ra\" IS NOT NULL\n  AND $__timeFilter(\"time\")\nORDER BY \"time\" ASC",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -688,6 +799,22 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          },
           "tags": []
         }
       ],
@@ -697,7 +824,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "XeuuDYUVz"
+        "uid": "af3478hdssyyob"
       },
       "description": "The declination vs loadtime. This is the value received by the delay model from the source finder. The current model delays are calculated for this declination. Note that there may be up to 5s before the F-Engines reflect these delays as that is the average loadtime.",
       "fieldConfig": {
@@ -706,11 +833,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "points",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -719,6 +848,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 8,
@@ -726,6 +856,7 @@
               "type": "linear"
             },
             "showPoints": "always",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -741,7 +872,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -768,17 +899,21 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
+          "dataset": "iox",
           "datasource": {
             "type": "influxdb",
-            "uid": "XeuuDYUVz"
+            "uid": "af3478hdssyyob"
           },
+          "editorMode": "code",
+          "format": "table",
           "groupBy": [
             {
               "params": [
@@ -796,6 +931,8 @@
           "orderByTime": "ASC",
           "policy": "default",
           "query": "from(bucket: \"delays\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"delay_pointing\")\n  |> filter(fn: (r) => r[\"_field\"] == \"deg_dec\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  \"time\",\n  \"deg_dec\" AS \"declination\"\nFROM \"delay_pointing\"\nWHERE \"deg_dec\" IS NOT NULL\n  AND $__timeFilter(\"time\")\nORDER BY \"time\" ASC",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -812,6 +949,22 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          },
           "tags": []
         }
       ],
@@ -820,10 +973,6 @@
     },
     {
       "collapsed": false,
-      "datasource": {
-        "type": "prometheus",
-        "uid": "louR3C0Vz"
-      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -832,22 +981,12 @@
       },
       "id": 11,
       "panels": [],
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "louR3C0Vz"
-          },
-          "refId": "A"
-        }
-      ],
       "title": "Current Antenna Calibration Values",
       "type": "row"
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "XeuuDYUVz"
+        "uid": "dfkdscbxfjdvkd"
       },
       "description": "",
       "fieldConfig": {
@@ -861,12 +1000,24 @@
               "type": "json-view"
             },
             "filterable": false,
+            "footer": {
+              "reducers": []
+            },
             "inspect": false
           },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
-            "steps": []
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
           }
         },
         "overrides": [
@@ -905,27 +1056,19 @@
       "id": 2,
       "options": {
         "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
         "frameIndex": 0,
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "XeuuDYUVz"
-          },
-          "query": "from(bucket: \"delays\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"fix_paths\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"fixed_delay_path\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
-          "refId": "fixed_delays"
+          "command": "hget",
+          "field": "fixed_delay",
+          "keyName": "CAL_fixedValuePaths",
+          "query": "",
+          "refId": "A",
+          "type": "command"
         }
       ],
       "title": "Path on disk to currently loaded delays",
@@ -933,8 +1076,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "XeuuDYUVz"
+        "type": "redis-datasource",
+        "uid": "dfkdscbxfjdvkd"
       },
       "description": "",
       "fieldConfig": {
@@ -948,6 +1091,9 @@
               "type": "json-view"
             },
             "filterable": false,
+            "footer": {
+              "reducers": []
+            },
             "inspect": false
           },
           "mappings": [],
@@ -992,27 +1138,23 @@
       "id": 70,
       "options": {
         "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
         "frameIndex": 0,
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
+          "command": "hget",
           "datasource": {
-            "type": "influxdb",
-            "uid": "XeuuDYUVz"
+            "type": "redis-datasource",
+            "uid": "dfkdscbxfjdvkd"
           },
-          "query": "from(bucket: \"delays\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"fix_paths\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"fixed_phase_path\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
-          "refId": "fixed_delays"
+          "field": "fixed_phase",
+          "keyName": "CAL_fixedValuePaths",
+          "query": "",
+          "refId": "A",
+          "type": "command"
         }
       ],
       "title": "Path on disk to currently loaded phases",
@@ -1034,7 +1176,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "XeuuDYUVz"
+        "uid": "af3478hdssyyob"
       },
       "description": "States are:\nGood = delay tracking thread is initialised and turned on to track.\nBad = delay tracking thread is initialised but has not been turned to track - likely means thread failed due to F-Engine timing.\nOff = delay tracking thread is not even initialised - likely means F-Engine is not configured and in operation.",
       "fieldConfig": {
@@ -1042,6 +1184,7 @@
           "color": {
             "mode": "thresholds"
           },
+          "displayName": "${__field.labels.ant}",
           "mappings": [
             {
               "options": {
@@ -1069,7 +1212,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -1092,6 +1235,7 @@
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -1099,26 +1243,60 @@
           "fields": "",
           "values": false
         },
-        "textMode": "value_and_name"
+        "showPercentChange": false,
+        "textMode": "value_and_name",
+        "wideLayout": true
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
+          "dataset": "iox",
           "datasource": {
             "type": "influxdb",
-            "uid": "XeuuDYUVz"
+            "uid": "af3478hdssyyob"
           },
+          "editorMode": "code",
+          "format": "table",
           "query": "from(bucket: \"delays\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"delay_state\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"tracking_alive\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"ea01\" or r[\"ant\"] == \"ea02\" or r[\"ant\"] == \"ea03\" or r[\"ant\"] == \"ea04\" or r[\"ant\"] == \"ea05\" or r[\"ant\"] == \"ea06\" or r[\"ant\"] == \"ea07\" or r[\"ant\"] == \"ea08\" or r[\"ant\"] == \"ea09\" or r[\"ant\"] == \"ea10\" or r[\"ant\"] == \"ea11\" or r[\"ant\"] == \"ea12\" or r[\"ant\"] == \"ea13\" or r[\"ant\"] == \"ea14\" or r[\"ant\"] == \"ea15\" or r[\"ant\"] == \"ea16\" or r[\"ant\"] == \"ea17\" or r[\"ant\"] == \"ea18\" or r[\"ant\"] == \"ea19\" or r[\"ant\"] == \"ea20\" or r[\"ant\"] == \"ea21\" or r[\"ant\"] == \"ea22\" or r[\"ant\"] == \"ea23\" or r[\"ant\"] == \"ea24\" or r[\"ant\"] == \"ea25\" or r[\"ant\"] == \"ea26\" or r[\"ant\"] == \"ea27\" or r[\"ant\"] == \"ea28\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
-          "refId": "A"
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  \"time\",\r\n  \"ant\",\r\n  CASE\r\n    WHEN \"tracking_alive\" = 0 THEN -1\r\n    WHEN \"tracking_alive\" = 1 AND \"tracking_ok\" = 0 THEN 0\r\n    WHEN \"tracking_alive\" = 1 AND \"tracking_ok\" = 1 THEN 1\r\n    ELSE -1\r\n  END AS \"status_code\"\r\nFROM \"delay_state\"\r\nWHERE \"tracking_alive\" IS NOT NULL\r\n  AND $__timeFilter(\"time\")\r\nORDER BY \"time\" ASC",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          }
         }
       ],
       "title": "State of delay tracking across all antenna",
+      "transformations": [
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "ant"
+            ],
+            "keepFields": false
+          }
+        }
+      ],
       "type": "stat"
     },
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "XeuuDYUVz"
+        "uid": "af3478hdssyyob"
       },
       "description": "Determined by:\n|sum_frequencies(sum_antenna(gains))| / sum_frequencies(sum_antenna(|gains|))",
       "fieldConfig": {
@@ -1127,11 +1305,15 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
+            "axisSoftMax": 1,
+            "axisSoftMin": 0,
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -1140,6 +1322,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1147,6 +1330,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -1161,7 +1345,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -1187,18 +1372,40 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
+      "pluginVersion": "12.2.1",
       "targets": [
         {
+          "dataset": "iox",
           "datasource": {
             "type": "influxdb",
-            "uid": "XeuuDYUVz"
+            "uid": "af3478hdssyyob"
           },
-          "query": "from(bucket: \"delays\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"fix_paths\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"calibration_grade\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
-          "refId": "Grade"
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  \"time\",\r\n  \"calibration_grade\"\r\nFROM \"fix_paths\"\r\nWHERE \"calibration_grade\" IS NOT NULL\r\nORDER BY \"time\" DESC\r\nLIMIT 5",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          }
         }
       ],
       "title": "Total Calibration grade",
@@ -1206,10 +1413,6 @@
     },
     {
       "collapsed": false,
-      "datasource": {
-        "type": "prometheus",
-        "uid": "louR3C0Vz"
-      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1218,886 +1421,15 @@
       },
       "id": 9,
       "panels": [],
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "louR3C0Vz"
-          },
-          "refId": "A"
-        }
-      ],
       "title": "Antenna $Antenna Delay State",
       "type": "row"
     },
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "XeuuDYUVz"
+        "uid": "af3478hdssyyob"
       },
       "description": "An aggregate for all F-Engine streams of whether the F-Shift applied matches that which is broadcast from mcast. This being Bad is not necessarily indicative of anything broken, as if the system is not recording, it will not load the currently broadcast fshifts to the F-Engines.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [
-            {
-              "options": {
-                "0": {
-                  "text": "Bad"
-                },
-                "1": {
-                  "text": "Good"
-                }
-              },
-              "type": "value"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": []
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 4,
-        "x": 0,
-        "y": 50
-      },
-      "id": 15,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "value"
-      },
-      "pluginVersion": "9.5.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "XeuuDYUVz"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "from(bucket: \"delays\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"delay_state\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"fshifts_correct\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "title": "${Antenna} F-shift status",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "XeuuDYUVz"
-      },
-      "description": "An aggregate for all F-Engine streams of whether the Delays applied are correct for the current sample time. This is calculated by reading delays off of the F-Engine sometime after loading and checking that they match the expected interpolated value. The delays are the sum of the calibration fixed delays and geometric.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [
-            {
-              "options": {
-                "0": {
-                  "text": "Bad"
-                },
-                "1": {
-                  "text": "Good"
-                }
-              },
-              "type": "value"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": []
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 4,
-        "x": 4,
-        "y": 50
-      },
-      "id": 17,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "value"
-      },
-      "pluginVersion": "9.5.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "XeuuDYUVz"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "from(bucket: \"delays\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"delay_state\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"delay_correct\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
-          "refId": "Delay_correct",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "title": "${Antenna} loading correct delays",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "XeuuDYUVz"
-      },
-      "description": "An aggregate for all F-Engine streams of whether the Phases applied are correct for the current sample time. This is calculated by reading phases off of the F-Engine sometime after loading and checking that they match the expected interpolated value These are the phases derived from the applied delay during tracking.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [
-            {
-              "options": {
-                "0": {
-                  "text": "Bad"
-                },
-                "1": {
-                  "text": "Good"
-                }
-              },
-              "type": "value"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": []
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 4,
-        "x": 8,
-        "y": 50
-      },
-      "id": 25,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "value"
-      },
-      "pluginVersion": "9.5.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "XeuuDYUVz"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "from(bucket: \"delays\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"delay_state\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"phase_correct\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
-          "refId": "Delay_correct",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "title": "${Antenna} Phase status",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "XeuuDYUVz"
-      },
-      "description": "Whether delays are loaded at the loadtime specified by the delay model. This is tested by checking the time_since_loaded value for the delays on the F-Engines corresponds to loadtime instructed.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [
-            {
-              "options": {
-                "0": {
-                  "text": "Bad"
-                },
-                "1": {
-                  "text": "Good"
-                }
-              },
-              "type": "value"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": []
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 4,
-        "x": 12,
-        "y": 50
-      },
-      "id": 37,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "value"
-      },
-      "pluginVersion": "9.5.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "XeuuDYUVz"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "from(bucket: \"delays\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"delay_state\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"loadtime_accurate\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
-          "refId": "Loadtime_correct",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "title": "${Antenna} Loadtime status",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "XeuuDYUVz"
-      },
-      "description": "Whether the phase calibration values calculated during the calibration run that are expected to have been loaded are loaded. This is checked in every calibration run, half a second after instructing the delay tracking thread to load the calibration delays.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [
-            {
-              "options": {
-                "0": {
-                  "text": "Bad"
-                },
-                "1": {
-                  "text": "Good"
-                }
-              },
-              "type": "value"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": []
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 4,
-        "x": 16,
-        "y": 50
-      },
-      "id": 43,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "value"
-      },
-      "pluginVersion": "9.5.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "XeuuDYUVz"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "from(bucket: \"delays\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"delay_state\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"phase_cal_correct\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
-          "refId": "phase_cal_loaded",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "title": "${Antenna} Phase Calibration Values Loaded status",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "XeuuDYUVz"
-      },
-      "description": "The F-Shift value loaded at present on the antenna for stream 0. Check the F-Shifts correct panel for information about whether this matches what is broadcast on mcast.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": []
-          },
-          "unit": "rothz"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 2,
-        "x": 20,
-        "y": 50
-      },
-      "id": 45,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "value"
-      },
-      "pluginVersion": "9.5.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "XeuuDYUVz"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "from(bucket: \"delays\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"delay_values\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"loaded_fshift_hz\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> filter(fn: (r) => r[\"stream\"] == \"0\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"last\")",
-          "refId": "FSHIFTS",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "title": "F-Shifts loaded for ${Antenna} stream 0",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "XeuuDYUVz"
-      },
-      "description": "The F-Shift value loaded at present for the antenna on stream 1. Check the F-Shifts correct panel for information about whether this matches what is broadcast on mcast.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": []
-          },
-          "unit": "rothz"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 2,
-        "x": 22,
-        "y": 50
-      },
-      "id": 47,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "value"
-      },
-      "pluginVersion": "9.5.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "XeuuDYUVz"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "from(bucket: \"delays\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"delay_values\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"loaded_fshift_hz\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> filter(fn: (r) => r[\"stream\"] == \"1\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"last\")",
-          "refId": "FSHIFTS",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "title": "F-Shifts loaded for ${Antenna} strean 1",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "XeuuDYUVz"
-      },
-      "description": "The tracking mode for the antenna.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "filterable": false,
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": []
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 5,
-        "x": 0,
-        "y": 54
-      },
-      "id": 35,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "showHeader": true
-      },
-      "pluginVersion": "9.5.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "XeuuDYUVz"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "from(bucket: \"delays\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"delay_state\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"tracking_mode\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
-          "refId": "sideband",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "title": "${Antenna} Tracking Mode",
-      "type": "table"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "XeuuDYUVz"
-      },
-      "description": "An aggregate for all F-Engine tunings of whether the sideband being used for phase calculations on the F-Engine matches that received from the delay model for that sample time.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [
-            {
-              "options": {
-                "0": {
-                  "text": "Bad"
-                },
-                "1": {
-                  "text": "Good"
-                }
-              },
-              "type": "value"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": []
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 5,
-        "x": 5,
-        "y": 54
-      },
-      "id": 33,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "value"
-      },
-      "pluginVersion": "9.5.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "XeuuDYUVz"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "from(bucket: \"delays\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tune_values\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"current_sideband\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> filter(fn: (r) => r[\"tune\"] == \"0\" or r[\"tune\"] == \"1\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
-          "refId": "sideband",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "title": "${Antenna} Sideband status",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "XeuuDYUVz"
-      },
-      "description": "The state of the tracking status. If good, this means that tracking has been switched on for the antenna - the mode of which is visible in the tracking mode panel.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2129,16 +1461,17 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 5,
-        "x": 10,
-        "y": 54
+        "w": 4,
+        "x": 0,
+        "y": 50
       },
-      "id": 39,
+      "id": 15,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -2146,16 +1479,21 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "text": {},
-        "textMode": "value"
+        "textMode": "value",
+        "wideLayout": true
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
+          "dataset": "iox",
           "datasource": {
             "type": "influxdb",
-            "uid": "XeuuDYUVz"
+            "uid": "af3478hdssyyob"
           },
+          "editorMode": "code",
+          "format": "table",
           "groupBy": [
             {
               "params": [
@@ -2172,8 +1510,10 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: \"delays\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"delay_state\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"tracking_ok\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
-          "refId": "tracking-state",
+          "query": "from(bucket: \"delays\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"delay_state\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"fshifts_correct\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  \"time\",\r\n  \"fshifts_correct\" AS \"status\"\r\nFROM \"delay_state\"\r\nWHERE \"ant\" = '${Antenna}'\r\n  AND \"fshifts_correct\" IS NOT NULL\r\n  AND $__timeFilter(\"time\")\r\nORDER BY \"time\" DESC\r\nLIMIT 1",
+          "refId": "A",
           "resultFormat": "time_series",
           "select": [
             [
@@ -2189,16 +1529,775 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          },
           "tags": []
         }
       ],
-      "title": "${Antenna} Tracking status",
+      "title": "${Antenna} F-shift status",
       "type": "stat"
     },
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "XeuuDYUVz"
+        "uid": "af3478hdssyyob"
+      },
+      "description": "An aggregate for all F-Engine streams of whether the Phases applied are correct for the current sample time. This is calculated by reading phases off of the F-Engine sometime after loading and checking that they match the expected interpolated value These are the phases derived from the applied delay during tracking.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "red",
+                  "index": 1,
+                  "text": "Bad"
+                },
+                "1": {
+                  "color": "green",
+                  "index": 0,
+                  "text": "Good"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": []
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 4,
+        "y": 50
+      },
+      "id": 25,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.2.1",
+      "targets": [
+        {
+          "dataset": "iox",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "af3478hdssyyob"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "from(bucket: \"delays\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"delay_state\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"phase_correct\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  \"time\",\r\n  \"phase_correct\" AS \"status\"\r\nFROM \"delay_state\"\r\nWHERE \"ant\" = '${Antenna}'\r\n  AND \"phase_correct\" IS NOT NULL\r\n  AND $__timeFilter(\"time\")\r\nORDER BY \"time\" DESC\r\nLIMIT 1",
+          "refId": "Delay_correct",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          },
+          "tags": []
+        }
+      ],
+      "title": "${Antenna} Phase status",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "af3478hdssyyob"
+      },
+      "description": "Whether delays are loaded at the loadtime specified by the delay model. This is tested by checking the time_since_loaded value for the delays on the F-Engines corresponds to loadtime instructed.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "red",
+                  "index": 1,
+                  "text": "Bad"
+                },
+                "1": {
+                  "color": "green",
+                  "index": 0,
+                  "text": "Good"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": []
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 8,
+        "y": 50
+      },
+      "id": 37,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.2.1",
+      "targets": [
+        {
+          "dataset": "iox",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "af3478hdssyyob"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "from(bucket: \"delays\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"delay_state\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"loadtime_accurate\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  \"time\",\r\n  \"loadtime_accurate\" AS \"status\"\r\nFROM \"delay_state\"\r\nWHERE \"ant\" = '${Antenna}'\r\n  AND \"loadtime_accurate\" IS NOT NULL\r\n  AND $__timeFilter(\"time\")\r\nORDER BY \"time\" DESC\r\nLIMIT 1",
+          "refId": "Loadtime_correct",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          },
+          "tags": []
+        }
+      ],
+      "title": "${Antenna} Loadtime status",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "af3478hdssyyob"
+      },
+      "description": "Whether the phase calibration values calculated during the calibration run that are expected to have been loaded are loaded. This is checked in every calibration run, half a second after instructing the delay tracking thread to load the calibration delays.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "red",
+                  "index": 1,
+                  "text": "Bad"
+                },
+                "1": {
+                  "color": "green",
+                  "index": 0,
+                  "text": "Good"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": []
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 12,
+        "y": 50
+      },
+      "id": 43,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.2.1",
+      "targets": [
+        {
+          "dataset": "iox",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "af3478hdssyyob"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "from(bucket: \"delays\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"delay_state\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"phase_cal_correct\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  \"time\",\r\n  \"phase_cal_correct\" AS \"status\"\r\nFROM \"delay_state\"\r\nWHERE \"ant\" = '${Antenna}'\r\n  AND \"phase_cal_correct\" IS NOT NULL\r\n  AND $__timeFilter(\"time\")\r\nORDER BY \"time\" DESC\r\nLIMIT 1",
+          "refId": "phase_cal_loaded",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          },
+          "tags": []
+        }
+      ],
+      "title": "${Antenna} Phase Calibration Values Loaded status",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "af3478hdssyyob"
+      },
+      "description": "An aggregate for all F-Engine streams of whether the Delays applied are correct for the current sample time. This is calculated by reading delays off of the F-Engine sometime after loading and checking that they match the expected interpolated value. The delays are the sum of the calibration fixed delays and geometric.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "red",
+                  "index": 1,
+                  "text": "Bad"
+                },
+                "1": {
+                  "color": "green",
+                  "index": 0,
+                  "text": "Good"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": []
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 16,
+        "y": 50
+      },
+      "id": 17,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.2.1",
+      "targets": [
+        {
+          "dataset": "iox",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "af3478hdssyyob"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "from(bucket: \"delays\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"delay_state\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"delay_correct\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  \"time\",\r\n  \"delay_correct\" AS \"status\"\r\nFROM \"delay_state\"\r\nWHERE \"ant\" = '${Antenna}'\r\n  AND \"delay_correct\" IS NOT NULL\r\n  AND $__timeFilter(\"time\")\r\nORDER BY \"time\" DESC\r\nLIMIT 1",
+          "refId": "Delay_correct",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          },
+          "tags": []
+        }
+      ],
+      "title": "${Antenna} loading correct delays",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "af3478hdssyyob"
+      },
+      "description": "An aggregate for all F-Engine tunings of whether the sideband being used for phase calculations on the F-Engine matches that received from the delay model for that sample time.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "red",
+                  "index": 1,
+                  "text": "Bad"
+                },
+                "1": {
+                  "color": "green",
+                  "index": 0,
+                  "text": "Good"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": []
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 20,
+        "y": 50
+      },
+      "id": 33,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.2.1",
+      "targets": [
+        {
+          "dataset": "iox",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "af3478hdssyyob"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "from(bucket: \"delays\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tune_values\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"current_sideband\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> filter(fn: (r) => r[\"tune\"] == \"0\" or r[\"tune\"] == \"1\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  MIN(CASE WHEN t.\"current_sideband\" = c.\"sideband\" THEN 1 ELSE 0 END) AS \"status\"\r\nFROM\r\n  (\r\n    SELECT \"tune\", \"current_sideband\"\r\n    FROM (\r\n      SELECT \"tune\", \"current_sideband\",\r\n             ROW_NUMBER() OVER(PARTITION BY \"tune\" ORDER BY \"time\" DESC) as rn\r\n      FROM \"tune_values\"\r\n      WHERE \"ant\" = '${Antenna}' \r\n        AND \"current_sideband\" IS NOT NULL\r\n        AND $__timeFilter(\"time\")\r\n    )\r\n    WHERE rn = 1\r\n  ) t\r\nJOIN\r\n  (\r\n    SELECT \"tune\", \"sideband\"\r\n    FROM (\r\n      SELECT \"tune\", \"sideband\",\r\n             ROW_NUMBER() OVER(PARTITION BY \"tune\" ORDER BY \"time\" DESC) as rn\r\n      FROM \"phase_centre_controller\"\r\n      WHERE \"sideband\" IS NOT NULL\r\n        AND $__timeFilter(\"time\")\r\n    )\r\n    WHERE rn = 1\r\n  ) c\r\nON t.\"tune\" = c.\"tune\"",
+          "refId": "sideband",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          },
+          "tags": []
+        }
+      ],
+      "title": "${Antenna} Sideband status",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "af3478hdssyyob"
+      },
+      "description": "The tracking mode for the antenna.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": false,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": []
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 0,
+        "y": 54
+      },
+      "id": 35,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.2.1",
+      "targets": [
+        {
+          "dataset": "iox",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "af3478hdssyyob"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "from(bucket: \"delays\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"delay_state\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"tracking_mode\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  \"time\",\r\n  \"tracking_mode\"\r\nFROM \"delay_state\"\r\nWHERE \"ant\" = '${Antenna}'\r\n  AND \"tracking_mode\" IS NOT NULL\r\n  AND $__timeFilter(\"time\")\r\nORDER BY \"time\" DESC\r\nLIMIT 1",
+          "refId": "sideband",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          },
+          "tags": []
+        }
+      ],
+      "title": "${Antenna} Tracking Mode",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "af3478hdssyyob"
       },
       "description": "This panel dictates if the tracking thread is even alive for this antenna which if False, indicates that the antenna may be out of commission.",
       "fieldConfig": {
@@ -2237,8 +2336,8 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 5,
-        "x": 15,
+        "w": 4,
+        "x": 8,
         "y": 54
       },
       "id": 41,
@@ -2247,6 +2346,7 @@
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -2254,16 +2354,21 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "text": {},
-        "textMode": "value"
+        "textMode": "value",
+        "wideLayout": true
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
+          "dataset": "iox",
           "datasource": {
             "type": "influxdb",
-            "uid": "XeuuDYUVz"
+            "uid": "af3478hdssyyob"
           },
+          "editorMode": "code",
+          "format": "table",
           "groupBy": [
             {
               "params": [
@@ -2281,6 +2386,8 @@
           "orderByTime": "ASC",
           "policy": "default",
           "query": "from(bucket: \"delays\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"delay_state\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"tracking_alive\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  \"time\",\r\n  \"tracking_alive\" AS \"status\"\r\nFROM \"delay_state\"\r\nWHERE \"ant\" = '${Antenna}'\r\n  AND \"tracking_alive\" IS NOT NULL\r\n  AND $__timeFilter(\"time\")\r\nORDER BY \"time\" DESC\r\nLIMIT 1",
           "refId": "tracking-state",
           "resultFormat": "time_series",
           "select": [
@@ -2297,6 +2404,22 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          },
           "tags": []
         }
       ],
@@ -2306,7 +2429,364 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "XeuuDYUVz"
+        "uid": "af3478hdssyyob"
+      },
+      "description": "The state of the tracking status. If good, this means that tracking has been switched on for the antenna - the mode of which is visible in the tracking mode panel.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "red",
+                  "index": 1,
+                  "text": "Bad"
+                },
+                "1": {
+                  "color": "green",
+                  "index": 0,
+                  "text": "Good"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": []
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 12,
+        "y": 54
+      },
+      "id": 39,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.2.1",
+      "targets": [
+        {
+          "dataset": "iox",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "af3478hdssyyob"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "from(bucket: \"delays\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"delay_state\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"tracking_ok\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  \"time\",\r\n  \"tracking_ok\" AS \"status\"\r\nFROM \"delay_state\"\r\nWHERE \"ant\" = '${Antenna}'\r\n  AND \"tracking_ok\" IS NOT NULL\r\n  AND $__timeFilter(\"time\")\r\nORDER BY \"time\" DESC\r\nLIMIT 1",
+          "refId": "tracking-state",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          },
+          "tags": []
+        }
+      ],
+      "title": "${Antenna} Tracking status",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "af3478hdssyyob"
+      },
+      "description": "The F-Shift value loaded at present on the antenna for stream 0. Check the F-Shifts correct panel for information about whether this matches what is broadcast on mcast.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": []
+          },
+          "unit": "rothz"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 0,
+        "y": 58
+      },
+      "id": 45,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.2.1",
+      "targets": [
+        {
+          "dataset": "iox",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "af3478hdssyyob"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "from(bucket: \"delays\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"delay_values\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"loaded_fshift_hz\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> filter(fn: (r) => r[\"stream\"] == \"0\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  \"time\",\r\n  \"loaded_fshift_hz\"\r\nFROM \"delay_values\"\r\nWHERE \"ant\" = '${Antenna}'\r\n  AND \"stream\" = '0'\r\n  AND \"loaded_fshift_hz\" IS NOT NULL\r\n  AND $__timeFilter(\"time\")\r\nORDER BY \"time\" DESC\r\nLIMIT 1",
+          "refId": "FSHIFTS",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [
+                  {
+                    "name": "\"$Antenna\"",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          },
+          "table": "delay_state",
+          "tags": []
+        }
+      ],
+      "title": "F-Shifts loaded for ${Antenna} stream 0",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "af3478hdssyyob"
+      },
+      "description": "The F-Shift value loaded at present for the antenna on stream 1. Check the F-Shifts correct panel for information about whether this matches what is broadcast on mcast.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": []
+          },
+          "unit": "rothz"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 4,
+        "y": 58
+      },
+      "id": 47,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.2.1",
+      "targets": [
+        {
+          "dataset": "iox",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "af3478hdssyyob"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "from(bucket: \"delays\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"delay_values\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"loaded_fshift_hz\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> filter(fn: (r) => r[\"stream\"] == \"1\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  \"time\",\r\n  \"loaded_fshift_hz\"\r\nFROM \"delay_values\"\r\nWHERE \"ant\" = '${Antenna}'\r\n  AND \"stream\" = '1'\r\n  AND \"loaded_fshift_hz\" IS NOT NULL\r\n  AND $__timeFilter(\"time\")\r\nORDER BY \"time\" DESC\r\nLIMIT 1",
+          "refId": "FSHIFTS",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          },
+          "tags": []
+        }
+      ],
+      "title": "F-Shifts loaded for ${Antenna} stream 1",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "af3478hdssyyob"
       },
       "description": "The F-Shift value loaded at present for the antenna on stream 2. Check the F-Shifts correct panel for information about whether this matches what is broadcast on mcast.",
       "fieldConfig": {
@@ -2325,9 +2805,9 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 2,
-        "x": 20,
-        "y": 54
+        "w": 4,
+        "x": 8,
+        "y": 58
       },
       "id": 49,
       "options": {
@@ -2335,6 +2815,7 @@
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -2342,16 +2823,21 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "text": {},
-        "textMode": "value"
+        "textMode": "value",
+        "wideLayout": true
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
+          "dataset": "iox",
           "datasource": {
             "type": "influxdb",
-            "uid": "XeuuDYUVz"
+            "uid": "af3478hdssyyob"
           },
+          "editorMode": "code",
+          "format": "table",
           "groupBy": [
             {
               "params": [
@@ -2369,6 +2855,8 @@
           "orderByTime": "ASC",
           "policy": "default",
           "query": "from(bucket: \"delays\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"delay_values\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"loaded_fshift_hz\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> filter(fn: (r) => r[\"stream\"] == \"2\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  \"time\",\r\n  \"loaded_fshift_hz\"\r\nFROM \"delay_values\"\r\nWHERE \"ant\" = '${Antenna}'\r\n  AND \"stream\" = '2'\r\n  AND \"loaded_fshift_hz\" IS NOT NULL\r\n  AND $__timeFilter(\"time\")\r\nORDER BY \"time\" DESC\r\nLIMIT 1",
           "refId": "FSHIFTS",
           "resultFormat": "time_series",
           "select": [
@@ -2385,6 +2873,22 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          },
           "tags": []
         }
       ],
@@ -2394,7 +2898,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "XeuuDYUVz"
+        "uid": "af3478hdssyyob"
       },
       "description": "The F-Shift value loaded at present for the antenna for stream 3. Check the F-Shifts correct panel for information about whether this matches what is broadcast on mcast.",
       "fieldConfig": {
@@ -2413,9 +2917,9 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 2,
-        "x": 22,
-        "y": 54
+        "w": 4,
+        "x": 12,
+        "y": 58
       },
       "id": 51,
       "options": {
@@ -2423,6 +2927,7 @@
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -2430,16 +2935,21 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "text": {},
-        "textMode": "value"
+        "textMode": "value",
+        "wideLayout": true
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
+          "dataset": "iox",
           "datasource": {
             "type": "influxdb",
-            "uid": "XeuuDYUVz"
+            "uid": "af3478hdssyyob"
           },
+          "editorMode": "code",
+          "format": "table",
           "groupBy": [
             {
               "params": [
@@ -2457,6 +2967,8 @@
           "orderByTime": "ASC",
           "policy": "default",
           "query": "from(bucket: \"delays\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"delay_values\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"loaded_fshift_hz\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> filter(fn: (r) => r[\"stream\"] == \"3\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  \"time\",\r\n  \"loaded_fshift_hz\"\r\nFROM \"delay_values\"\r\nWHERE \"ant\" = '${Antenna}'\r\n  AND \"stream\" = '3'\r\n  AND \"loaded_fshift_hz\" IS NOT NULL\r\n  AND $__timeFilter(\"time\")\r\nORDER BY \"time\" DESC\r\nLIMIT 1",
           "refId": "FSHIFTS",
           "resultFormat": "time_series",
           "select": [
@@ -2473,6 +2985,22 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          },
           "tags": []
         }
       ],
@@ -2482,7 +3010,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "XeuuDYUVz"
+        "uid": "af3478hdssyyob"
       },
       "description": "Expected and firmware delays across all F-Engine streams for the antenna. \nFirmware delays are calculated by reading fractional and coarse delays off of the F-Engines.\nExpected delays are calculated by knowing what calibration delay and geometric delay coefficients were loaded, interpolating the geometric delays to a the time of reading from the F-Engine and comparing.\nThis is the cumulative delays i.e. Calibration delays + geometric delays.",
       "fieldConfig": {
@@ -2491,11 +3019,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "points",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -2504,6 +3034,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 3,
@@ -2511,6 +3042,7 @@
               "type": "linear"
             },
             "showPoints": "always",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -2525,7 +3057,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -2535,13 +3068,38 @@
           },
           "unit": "ns"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "expected_delay_ns"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": true,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 58
+        "y": 62
       },
       "id": 21,
       "options": {
@@ -2552,17 +3110,21 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
+          "dataset": "iox",
           "datasource": {
             "type": "influxdb",
-            "uid": "XeuuDYUVz"
+            "uid": "af3478hdssyyob"
           },
+          "editorMode": "code",
+          "format": "table",
           "groupBy": [
             {
               "params": [
@@ -2580,6 +3142,8 @@
           "orderByTime": "ASC",
           "policy": "default",
           "query": "from(bucket: \"delays\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"delay_values\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"firmware_delay_ns\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> filter(fn: (r) => r[\"stream\"] == \"0\" or r[\"stream\"] == \"1\" or r[\"stream\"] == \"2\" or r[\"stream\"] == \"3\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  \"time\",\n  \"stream\",\n  \"expected_delay_ns\",\n  \"firmware_delay_ns\"\nFROM \"delay_values\"\nWHERE \"ant\" = '${Antenna}'\n  AND \"expected_delay_ns\" IS NOT NULL\n  AND \"firmware_delay_ns\" IS NOT NULL\n  AND $__timeFilter(\"time\")\nORDER BY \"time\" ASC",
           "refId": "firmware_delays",
           "resultFormat": "time_series",
           "select": [
@@ -2596,47 +3160,22 @@
               }
             ]
           ],
-          "tags": []
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "XeuuDYUVz"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "from(bucket: \"delays\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"delay_values\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"expected_delay_ns\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> filter(fn: (r) => r[\"stream\"] == \"0\" or r[\"stream\"] == \"1\" or r[\"stream\"] == \"2\" or r[\"stream\"] == \"3\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"last\")",
-          "refId": "expected_delays",
-          "resultFormat": "time_series",
-          "select": [
-            [
+          "sql": {
+            "columns": [
               {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
               {
-                "params": [],
-                "type": "mean"
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
               }
             ]
-          ],
+          },
           "tags": []
         }
       ],
@@ -2646,7 +3185,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "XeuuDYUVz"
+        "uid": "af3478hdssyyob"
       },
       "description": "The calibration delays produced via the calibration process and sent out to be loaded to F-Engines within half a second. Note that these values will differ from those in the .csv file as they are offset by (8e3/(0.66 * c))*1e9 ns.",
       "fieldConfig": {
@@ -2655,11 +3194,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "points",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -2668,13 +3209,15 @@
               "tooltip": false,
               "viz": false
             },
-            "lineInterpolation": "linear",
+            "insertNulls": false,
+            "lineInterpolation": "stepBefore",
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
             "showPoints": "always",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -2689,7 +3232,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -2705,7 +3249,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 68
+        "y": 72
       },
       "id": 53,
       "options": {
@@ -2716,17 +3260,21 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
+          "dataset": "iox",
           "datasource": {
             "type": "influxdb",
-            "uid": "XeuuDYUVz"
+            "uid": "af3478hdssyyob"
           },
+          "editorMode": "code",
+          "format": "table",
           "groupBy": [
             {
               "params": [
@@ -2744,6 +3292,8 @@
           "orderByTime": "ASC",
           "policy": "default",
           "query": "from(bucket: \"delays\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"fix_delays\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"fixed_delay_ns\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> filter(fn: (r) => r[\"stream\"] == \"0\" or r[\"stream\"] == \"1\" or r[\"stream\"] == \"2\" or r[\"stream\"] == \"3\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  \"time\",\n  \"stream\",\n  \"fixed_delay_ns\"\nFROM \"fix_delays\"\nWHERE \"ant\" = '${Antenna}'\n  AND \"fixed_delay_ns\" IS NOT NULL\n  AND $__timeFilter(\"time\")\nORDER BY \"time\" ASC",
           "refId": "fixed-delays",
           "resultFormat": "time_series",
           "select": [
@@ -2760,6 +3310,22 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          },
           "tags": []
         }
       ],
@@ -2769,7 +3335,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "XeuuDYUVz"
+        "uid": "af3478hdssyyob"
       },
       "description": "The calculated geometric delay (1st order coefficient) produced via the delaymodel process and sent out to be loaded to F-Engines at loadtime.",
       "fieldConfig": {
@@ -2778,11 +3344,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "points",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -2791,6 +3359,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 3,
@@ -2798,6 +3367,7 @@
               "type": "linear"
             },
             "showPoints": "always",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -2812,7 +3382,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -2828,7 +3399,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 79
+        "y": 83
       },
       "id": 55,
       "options": {
@@ -2839,17 +3410,21 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
+          "dataset": "iox",
           "datasource": {
             "type": "influxdb",
-            "uid": "XeuuDYUVz"
+            "uid": "af3478hdssyyob"
           },
+          "editorMode": "code",
+          "format": "table",
           "groupBy": [
             {
               "params": [
@@ -2867,6 +3442,8 @@
           "orderByTime": "ASC",
           "policy": "default",
           "query": "from(bucket: \"delays\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"delay_coeff\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"delay_ns\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  \"time\",\n  \"delay_ns\" AS \"geometric_delay_ns\"\nFROM \"delay_coeff\"\nWHERE \"ant\" = '${Antenna}'\n  AND \"delay_ns\" IS NOT NULL\n  AND $__timeFilter(\"time\")\nORDER BY \"time\" ASC",
           "refId": "fixed-delays",
           "resultFormat": "time_series",
           "select": [
@@ -2883,6 +3460,22 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          },
           "tags": []
         }
       ],
@@ -2892,7 +3485,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "XeuuDYUVz"
+        "uid": "af3478hdssyyob"
       },
       "description": "The calculated geometric delay (2nd order coefficient) produced via the delaymodel process and sent out to be loaded to F-Engines at loadtime.",
       "fieldConfig": {
@@ -2901,11 +3494,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "points",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -2914,6 +3509,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 3,
@@ -2921,6 +3517,7 @@
               "type": "linear"
             },
             "showPoints": "always",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -2935,7 +3532,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -2951,7 +3549,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 90
+        "y": 94
       },
       "id": 57,
       "options": {
@@ -2962,17 +3560,21 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
+          "dataset": "iox",
           "datasource": {
             "type": "influxdb",
-            "uid": "XeuuDYUVz"
+            "uid": "af3478hdssyyob"
           },
+          "editorMode": "code",
+          "format": "table",
           "groupBy": [
             {
               "params": [
@@ -2990,6 +3592,8 @@
           "orderByTime": "ASC",
           "policy": "default",
           "query": "from(bucket: \"delays\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"delay_coeff\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"delay_rate_nsps\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  \"time\",\n  \"delay_rate_nsps\"\nFROM \"delay_coeff\"\nWHERE \"ant\" = '${Antenna}'\n  AND \"delay_rate_nsps\" IS NOT NULL\n  AND $__timeFilter(\"time\")\nORDER BY \"time\" ASC",
           "refId": "fixed-delays",
           "resultFormat": "time_series",
           "select": [
@@ -3006,6 +3610,22 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          },
           "tags": []
         }
       ],
@@ -3015,7 +3635,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "XeuuDYUVz"
+        "uid": "af3478hdssyyob"
       },
       "description": "The calculated geometric delay (3rd order coefficient) produced via the delaymodel process and sent out to be loaded to F-Engines at loadtime.",
       "fieldConfig": {
@@ -3024,11 +3644,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "points",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -3037,6 +3659,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 3,
@@ -3044,6 +3667,7 @@
               "type": "linear"
             },
             "showPoints": "always",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -3058,7 +3682,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -3074,7 +3699,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 101
+        "y": 105
       },
       "id": 59,
       "options": {
@@ -3085,17 +3710,21 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
+          "dataset": "iox",
           "datasource": {
             "type": "influxdb",
-            "uid": "XeuuDYUVz"
+            "uid": "af3478hdssyyob"
           },
+          "editorMode": "code",
+          "format": "table",
           "groupBy": [
             {
               "params": [
@@ -3113,6 +3742,8 @@
           "orderByTime": "ASC",
           "policy": "default",
           "query": "from(bucket: \"delays\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"delay_coeff\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"delay_raterate_nsps2\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  \"time\",\n  \"delay_raterate_nsps2\"\nFROM \"delay_coeff\"\nWHERE \"ant\" = '${Antenna}'\n  AND \"delay_raterate_nsps2\" IS NOT NULL\n  AND $__timeFilter(\"time\")\nORDER BY \"time\" ASC",
           "refId": "fixed-delays",
           "resultFormat": "time_series",
           "select": [
@@ -3129,6 +3760,22 @@
               }
             ]
           ],
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ]
+          },
           "tags": []
         }
       ],
@@ -3138,7 +3785,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "XeuuDYUVz"
+        "uid": "af3478hdssyyob"
       },
       "description": "Expected and firmware phases across all F-Engine streams for the antenna. \nFirmware phases are calculated by reading loaded phases off of the F-Engines.\nExpected phases are calculated by knowing what phases and rates were loaded, interpolating the geometric delays to a the time of reading from the F-Engine and comparing.",
       "fieldConfig": {
@@ -3147,11 +3794,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "points",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -3160,6 +3809,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 3,
@@ -3167,6 +3817,7 @@
               "type": "linear"
             },
             "showPoints": "always",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -3181,7 +3832,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -3191,13 +3843,38 @@
           },
           "unit": "radian"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "firmware_phase_rad"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": true,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 112
+        "y": 116
       },
       "id": 23,
       "options": {
@@ -3208,17 +3885,21 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "9.5.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
+          "dataset": "iox",
           "datasource": {
             "type": "influxdb",
-            "uid": "XeuuDYUVz"
+            "uid": "af3478hdssyyob"
           },
+          "editorMode": "code",
+          "format": "table",
           "groupBy": [
             {
               "params": [
@@ -3236,6 +3917,8 @@
           "orderByTime": "ASC",
           "policy": "default",
           "query": "from(bucket: \"delays\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"delay_values\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"expected_phase_rad\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> filter(fn: (r) => r[\"stream\"] == \"0\" or r[\"stream\"] == \"1\" or r[\"stream\"] == \"2\" or r[\"stream\"] == \"3\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"last\")",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  \"time\",\n  \"stream\",\n  \"expected_phase_rad\",\n  \"firmware_phase_rad\"\nFROM \"delay_values\"\nWHERE \"ant\" = '${Antenna}'\n  AND \"expected_phase_rad\" IS NOT NULL\n  AND \"firmware_phase_rad\" IS NOT NULL\n  AND $__timeFilter(\"time\")\nORDER BY \"time\" ASC",
           "refId": "expected_phase",
           "resultFormat": "time_series",
           "select": [
@@ -3252,47 +3935,22 @@
               }
             ]
           ],
-          "tags": []
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "XeuuDYUVz"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "from(bucket: \"delays\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"delay_values\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"firmware_phase_rad\")\r\n  |> filter(fn: (r) => r[\"ant\"] == \"${Antenna}\")\r\n  |> filter(fn: (r) => r[\"stream\"] == \"0\" or r[\"stream\"] == \"1\" or r[\"stream\"] == \"2\" or r[\"stream\"] == \"3\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"last\")",
-          "refId": "firmware_phase",
-          "resultFormat": "time_series",
-          "select": [
-            [
+          "sql": {
+            "columns": [
               {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
               {
-                "params": [],
-                "type": "mean"
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
               }
             ]
-          ],
+          },
           "tags": []
         }
       ],
@@ -3300,21 +3958,18 @@
       "type": "timeseries"
     }
   ],
+  "preload": false,
   "refresh": "",
-  "schemaVersion": 38,
-  "style": "dark",
+  "schemaVersion": 42,
   "tags": [],
   "templating": {
     "list": [
       {
         "current": {
-          "selected": true,
           "text": "ea01",
           "value": "ea01"
         },
-        "hide": 0,
         "includeAll": false,
-        "multi": false,
         "name": "Antenna",
         "options": [
           {
@@ -3459,20 +4114,17 @@
           }
         ],
         "query": "ea01, ea02, ea03, ea04, ea05, ea06, ea07, ea08, ea09, ea10, ea11, ea12, ea13, ea14, ea15, ea16, ea17, ea18, ea19, ea20, ea21, ea22, ea23, ea24, ea25, ea26, ea27, ea28",
-        "queryValue": "",
-        "skipUrlSync": false,
         "type": "custom"
       }
     ]
   },
   "time": {
-    "from": "now-3h",
+    "from": "now-12h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "COSMIC-VLA-DELAY",
   "uid": "1Ts9nb8Vz",
-  "version": 38,
-  "weekStart": ""
+  "version": 89
 }
